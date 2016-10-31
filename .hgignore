@@ -1,6 +1,6 @@
 syntax: glob
 
-abstract-moc-rvg.pdf
+full-paper.pdf
 *.bcf
 *.xml
 *.out
