@@ -2,8 +2,11 @@ syntax: glob
 
 full-paper.pdf
 *.bcf
+*.bbl
+*.blg
 *.xml
 *.out
 *.log
 *.aux
 *.backup
+*.toc

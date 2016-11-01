@@ -50,7 +50,12 @@
 % biblatex
 \usepackage{csquotes}     % this package is needed for \blx@bibinit below (sic)
 \usepackage[backend=biber,sorting=none]{biblatex}    
-\addbibresource{bibliografia.bib}
+\addbibresource{bibliografia/bibliografia.bib}
+\addbibresource{bibliografia/congresos.bib}
+\addbibresource{bibliografia/informes.bib}
+\addbibresource{bibliografia/internacionales.bib}
+\addbibresource{bibliografia/monografias.bib}
+\addbibresource{bibliografia/nacionales.bib}
 % initialize macros so \bibstring can be used to show some fields (needs csquotes)
 \makeatletter
 \blx@bibinit
@@ -98,9 +103,6 @@
 
 \def\maketitle{%
 \thispagestyle{empty}
-
-\newlength{\coff}
-\setlength{\coff}{0.3cm}
 
 % --- title -------------------------------------------------------
 \null
@@ -163,9 +165,43 @@ Buenos Aires, Noviembre 2016
 \end{small}
 \end{center}
 
+\pagebreak
+
+\title{Resolución de la ecuación de transporte mediante el método de las características en el código neutrónico milonga}
+\author{Vignolo, R.$^{1}$}
+\affiliation{%
+$^1$TECNA Estudios y Proyectos de Ingeniería S.A.\\
+Encarnaci\'on Ezcurra 365, C1107CLA~Buenos Aires, Argentina\\
+\url{rvignolo@tecna.com}\\
+}
+
+
+\maketitle
+
+\selectlanguage{english}
+\begin{abstract}
+\noindent
+traducir al ingles
+\end{abstract}
+
+\vfill
+
+\begin{center}
+\begin{small}
+XLIII Reunión Anual de la Asociación Argentina de Tecnología Nuclear\\
+Buenos Aires, Noviembre 2016
+\end{small}
+\end{center}
+
 \addtolength{\textheight}{-2cm}
 
 \pagebreak
+
+\selectlanguage{spanish}
+
+\tableofcontents
+\pagebreak
+
 
 \section{Introducción}
 
@@ -196,7 +232,7 @@ Debido a la gran cantidad de notación disponible en la bibliografía, es conven
 
 \begin{figure}[!h]
  \begin{center}
-  \includegraphics[width=1.0\linewidth]{coords-indices.pdf}
+  \includegraphics[width=1.0\linewidth]{coords-indices-2.pdf}
  \end{center}
 \caption{\label{fig:coords-indices} Discretización espacial de la formulación MOC.}
 \end{figure}
@@ -358,6 +394,8 @@ La resolución de las ecuaciones~(\ref{eq:fuente-isotropica}), (\ref{eq:delta-ps
 
 
 \label{lastpage}
+
+\printbibliography
 
 \end{document}
 
