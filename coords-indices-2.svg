@@ -25,15 +25,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="984"
+     inkscape:window-width="2560"
+     inkscape:window-height="1480"
      id="namedview88"
      showgrid="false"
      inkscape:zoom="0.88314167"
-     inkscape:cx="794.62401"
-     inkscape:cy="535.34995"
+     inkscape:cx="754.02218"
+     inkscape:cy="395.8828"
      inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-y="41"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2"
      showguides="true"
@@ -213,11 +213,6 @@ CreationDate: Sat Feb 20 12:43:33 2016
      style="fill:none;stroke:#000000;stroke-width:1.25;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
      id="polyline52"
      points="817.38,511.237 817.38,117.458" />
-  <polyline
-     transform="matrix(1.655267,0,0,0.71744077,-682.22473,143.30778)"
-     style="fill:none;stroke:#808080;stroke-width:0.91764127;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:11.01169521,11.01169521;stroke-dashoffset:0"
-     id="polyline54"
-     points="1058.92,256.547 1058.92,835.192" />
   <polyline
      transform="translate(-97.591606,190.98346)"
      style="fill:none;stroke:#000000;stroke-width:3.75;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
@@ -424,7 +419,7 @@ CreationDate: Sat Feb 20 12:43:33 2016
      id="polyline54-5"
      points="1058.92,256.547 1058.92,835.192" />
   <circle
-     style="fill:#5a5a5a"
+     style="fill:#808080;fill-opacity:1"
      sodipodi:ry="2"
      sodipodi:rx="2"
      sodipodi:cy="545.87"
@@ -881,17 +876,6 @@ CreationDate: Sat Feb 20 12:43:33 2016
       </g>
     </g>
   </g>
-  <circle
-     style="fill:#5a5a5a"
-     sodipodi:ry="2"
-     sodipodi:rx="2"
-     sodipodi:cy="545.87"
-     sodipodi:cx="1058.92"
-     id="circle50-3"
-     r="2"
-     cy="545.87"
-     cx="1058.92"
-     transform="translate(11.650558,-218.36335)" />
   <polyline
      transform="matrix(3.0912195,2.0530574,-0.77086151,0.16026182,-1637.0273,-1452.9113)"
      style="fill:none;stroke:#000000;stroke-width:0.6738109;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8.08573043, 8.08573043;stroke-dashoffset:0;marker-start:none;marker-mid:none;marker-end:none"
@@ -902,13 +886,8 @@ CreationDate: Sat Feb 20 12:43:33 2016
      style="fill:none;stroke:#000000;stroke-width:0.6738109;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8.08573043, 8.08573043;stroke-dashoffset:0;marker-start:none;marker-mid:none;marker-end:none"
      id="polyline54-5-6-7"
      points="1058.92,256.547 1058.92,835.192" />
-  <polyline
-     transform="matrix(1.655267,0,0,1.2982325,-401.68387,-303.80641)"
-     style="fill:none;stroke:#808080;stroke-width:0.68216546;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8.18598548,8.18598548;stroke-dashoffset:0"
-     id="polyline54-53"
-     points="1058.92,256.547 1058.92,835.192" />
   <circle
-     style="fill:#5a5a5a"
+     style="fill:#808080;fill-opacity:1"
      sodipodi:ry="2"
      sodipodi:rx="2"
      sodipodi:cy="545.87"
@@ -1595,13 +1574,8 @@ CreationDate: Sat Feb 20 12:43:33 2016
       </g>
     </g>
   </g>
-  <polyline
-     transform="matrix(0.99289762,0,0,0.43035063,58.010982,331.14821)"
-     style="fill:none;stroke:#808080;stroke-width:1.52980661;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:18.35767939, 18.35767939;stroke-dashoffset:0"
-     id="polyline54-0"
-     points="1058.92,256.547 1058.92,835.192" />
   <circle
-     style="fill:#5a5a5a"
+     style="fill:#808080;fill-opacity:1"
      sodipodi:ry="2"
      sodipodi:rx="2"
      sodipodi:cy="545.87"
@@ -1612,7 +1586,7 @@ CreationDate: Sat Feb 20 12:43:33 2016
      cx="1058.92"
      transform="translate(310.35446,175.76855)" />
   <circle
-     style="fill:#5a5a5a"
+     style="fill:#808080;fill-opacity:1"
      sodipodi:ry="2"
      sodipodi:rx="2"
      sodipodi:cy="545.87"
@@ -1917,7 +1891,7 @@ CreationDate: Sat Feb 20 12:43:33 2016
     </g>
   </g>
   <circle
-     style="fill:#5a5a5a"
+     style="fill:#808080;fill-opacity:1"
      sodipodi:ry="2"
      sodipodi:rx="2"
      sodipodi:cy="545.87"
@@ -2484,4 +2458,30 @@ CreationDate: Sat Feb 20 12:43:33 2016
       </g>
     </g>
   </g>
+  <polyline
+     transform="matrix(1.655267,0,0,0.71744077,-682.22473,143.30778)"
+     style="fill:none;stroke:#808080;stroke-width:0.91764127;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:11.01169521,11.01169521;stroke-dashoffset:0"
+     id="polyline54"
+     points="1058.92,256.547 1058.92,835.192" />
+  <polyline
+     transform="matrix(1.655267,0,0,1.2982325,-401.68387,-303.80641)"
+     style="fill:none;stroke:#808080;stroke-width:0.68216546;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8.18598548,8.18598548;stroke-dashoffset:0"
+     id="polyline54-53"
+     points="1058.92,256.547 1058.92,835.192" />
+  <polyline
+     transform="matrix(0.99289762,0,0,0.43035063,58.010982,331.14821)"
+     style="fill:none;stroke:#808080;stroke-width:1.52980661;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:18.35767939, 18.35767939;stroke-dashoffset:0"
+     id="polyline54-0"
+     points="1058.92,256.547 1058.92,835.192" />
+  <circle
+     style="fill:#808080;fill-opacity:1"
+     sodipodi:ry="2"
+     sodipodi:rx="2"
+     sodipodi:cy="545.87"
+     sodipodi:cx="1058.92"
+     id="circle50-3"
+     r="2"
+     cy="545.87"
+     cx="1058.92"
+     transform="translate(11.650558,-218.36335)" />
 </svg>

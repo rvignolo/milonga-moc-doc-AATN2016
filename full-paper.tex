@@ -167,7 +167,7 @@ Buenos Aires, Noviembre 2016
 
 \pagebreak
 
-\title{Resolución de la ecuación de transporte mediante el método de las características en el código neutrónico milonga}
+\title{Solving the neutron transport equation by the method of characteristics in milonga neutron code}
 \author{Vignolo, R.$^{1}$}
 \affiliation{%
 $^1$TECNA Estudios y Proyectos de Ingeniería S.A.\\
@@ -181,7 +181,9 @@ Encarnaci\'on Ezcurra 365, C1107CLA~Buenos Aires, Argentina\\
 \selectlanguage{english}
 \begin{abstract}
 \noindent
-traducir al ingles
+Milonga is a neutron code that is used to solve the steady-state multigroup neutron transport equation either by using the diffusion approximation or the discrete ordinates method ($S_N$) over unstructured grids (although simple structured grids can also be used). Both formulations can be solved over a finite-volumes or a finite-elements discretization scheme. Milonga was born as part of a PhD in nuclear engineering and, since it is free software (as in free speech), it may be developed collaboratively by volunteer engineers/computer programmers who do not want to be, as Stamm'ler used to say, users that ``\emph{will never understand the programs they are to use and, as computer slaves, consider them as black boxes, blindy trusting their results''} (Stamm'ler et al., 1983). The implementation of the method of characteristics (MOC) incorporates in milonga a lattice formulation, filling in the missing stage of production calculations: lattice (MOC), lattice-core ($S_N$) and core (diffusion).
+
+En esta primera instancia del desarrollo de formulaciones de celda, MOC fue seleccionado por sobre el método de las probabilidades de colisión debido a que éste no produce matrices densas, por lo que es posible resolver problemas con mayor cantidad de regiones. En este contexto, se desarrolló un eficiente algoritmo de \emph{ray tracing} sobre mallas no estructuradas y estructuradas y un \emph{solver} de potencias no lineal que, mediante la resolución de la ecuación de transporte en cada \emph{track}, permite obtener el flujo escalar en cada región y grupo de energía. En este trabajo se discute acerca de la implementación del método, los resultados preliminares obtenidos y las futuras mejoras e incorporaciones.
 \end{abstract}
 
 \vfill
@@ -384,14 +386,29 @@ Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as
  .
 \end{multline}
 
-La resolución de las ecuaciones~(\ref{eq:fuente-isotropica}), (\ref{eq:delta-psi}) y~(\ref{eq:flujo-escalar-3}) permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~(\ref{eq:flujo-escalar-3}) a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~(\ref{eq:delta-psi}). Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ (ecuación~\ref{eq:fuente-isotropica}).
+La resolución de las ecuaciones~(\ref{eq:fuente-isotropica}), (\ref{eq:delta-psi}) y~(\ref{eq:flujo-escalar-3}) permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~(\ref{eq:flujo-escalar-3}) a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~(\ref{eq:delta-psi}). Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un (\ref{eq:fuente-isotropica}).
 
+\section{Geometr\'ias en milonga}
 
+Las geometrias en milonga se interpretan a traves de mallas, ya sean estructuradas o no estructuradas. 
 
+\subsection{Mallas estructuradas}
 
+\subsection{Mallas no estructuradas}
 
+\subsection{Ray tracing de mallas 2D}
 
+\subsection{Discusi\'on acerca de geometr\'ias}
 
+se deberia hacer un modulo mas eficiente para cargar geometrias.
+
+\section{MOC solver}
+
+\section{Input}
+
+\section{Resultados}
+
+\section{Conclusiones}
 
 \label{lastpage}
 
