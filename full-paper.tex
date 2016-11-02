@@ -392,13 +392,20 @@ Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as
 
 La resolución de las ecuaciones~\eqref{eq:fuente-isotropica}, \eqref{eq:delta-psi} y~\eqref{eq:flujo-escalar-3} permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~\eqref{eq:flujo-escalar-3} a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~\eqref{eq:delta-psi}. Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un \eqref{eq:fuente-isotropica}.
 
+{\color{red}Falta hablar de las cuadraturas cuadraturas}
+
 \section{Geometr\'ias en milonga}
 
 Las geometrias en milonga se interpretan a traves de mallas, ya sean estructuradas o no estructuradas. 
 
+caso particular de moc: tienen que ser un dominio rectangular, pero oprque es así lo explico mas adelante.
+
 \subsection{Mallas estructuradas y no estructuradas}
 
-\subsection{Ray tracing de mallas 2D}
+\subsection{\emph{Ray tracing} de mallas 2D}
+
+El proceso de \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de toda las estructuras de datos que almacenan la información de los \emph{tracks}: segmentos que los forman y la región a la que cada uno de ellos pertenece, condiciones de contorno.Como hemos visto, actualmente la implementación de MOC en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado. 
+
 
 \subsection{Discusi\'on acerca de geometr\'ias}
 
