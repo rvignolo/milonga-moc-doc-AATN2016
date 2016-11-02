@@ -181,17 +181,21 @@ Encarnaci\'on Ezcurra 365, C1107CLA~Buenos Aires, Argentina\\
 \selectlanguage{english}
 \begin{abstract}
 \noindent
-Milonga is a neutron code that is used to solve the steady-state multigroup neutron transport equation either by using the diffusion approximation or the discrete ordinates method ($S_N$) over unstructured grids (although simple structured grids can also be used). Both formulations can be solved over a finite-volumes or a finite-elements discretization scheme. Milonga was born as part of a PhD in nuclear engineering and, since it is free software (as in free speech), it may be developed collaboratively by volunteer engineers/computer programmers who do not want to be, as Stamm'ler used to say, users that ``\emph{will never understand the programs they are to use and, as computer slaves, consider them as black boxes, blindy trusting their results''} (Stamm'ler et al., 1983). The implementation of the method of characteristics (MOC) incorporates in milonga a lattice formulation, filling in the missing stage of production calculations: lattice (MOC), lattice-core ($S_N$) and core (diffusion).
-
-En esta primera instancia del desarrollo de formulaciones de celda, MOC fue seleccionado por sobre el método de las probabilidades de colisión debido a que éste no produce matrices densas, por lo que es posible resolver problemas con mayor cantidad de regiones. En este contexto, se desarrolló un eficiente algoritmo de \emph{ray tracing} sobre mallas no estructuradas y estructuradas y un \emph{solver} de potencias no lineal que, mediante la resolución de la ecuación de transporte en cada \emph{track}, permite obtener el flujo escalar en cada región y grupo de energía. En este trabajo se discute acerca de la implementación del método, los resultados preliminares obtenidos y las futuras mejoras e incorporaciones.
+Milonga is a neutron code that solves the steady-state multigroup neutron transport equation either by using the diffusion approximation or the discrete ordinates method ($S_N$) over unstructured grids (although simple structured grids can also be used). Both formulations can be solved over a finite-volumes or a finite-elements discretization scheme. Milonga was born as part of a PhD in nuclear engineering and, since it is free software (as in free speech), it may be developed collaboratively by volunteer engineers/computer programmers who do not want to be, as Stamm'ler used to say, users that ``\emph{will never understand the programs they are to use and, as computer slaves, consider them as black boxes, blindy trusting their results''} (Stamm'ler et al., 1983). The implementation of the method of characteristics (MOC) incorporates in milonga a lattice formulation, filling in the missing stage of production calculations: lattice (MOC), lattice-core ($S_N$) and core (diffusion). In this first stage of development of lattice formulations, MOC was selected because it overcome the main limitation for collision probability (CP) method: it does not produce full square matrices of order equal to the number of regions in the domain times the energy groups, so it is possible to solve problems with many more regions. In this context, an efficient ray tracing algorithm for structured and unstructured meshes and a non-linear power method were developed. These two things allow to compute the scalar flux per refion and energy group by collecting all mean angular fluxes over track segments and region sources. This paper discusses about the implementation of the method, preliminary results and future improvements or additions in milonga.
 \end{abstract}
+
+\vfill
+
+\begin{center}
+\includegraphics[width=5cm]{vibora-blanca-sola.pdf}
+\end{center}
 
 \vfill
 
 \begin{center}
 \begin{small}
 XLIII Reunión Anual de la Asociación Argentina de Tecnología Nuclear\\
-Buenos Aires, Noviembre 2016
+Buenos Aires, November 2016
 \end{small}
 \end{center}
 
@@ -211,7 +215,7 @@ Los cálculos de celda se corresponden, tradicionalmente, con el primer paso del
 
 En un comienzo, la celda elemental consistía en un \emph{pin cell} donde sólo se representa una única barra combustible junto al moderador que la rodea y condiciones de contorno reflectivas. Debido al incremento en el poder de cálculo, hoy en día es posible realizar cálculos de celda a nivel de elemento combustible e incluso se busca realizarlos a nivel de núcleo. El método de las características (comúnmente denominado MOC) pareciera ofrecer esta posibilidad, y es por este motivo que durante los últimos años ha ganado un particular interés. 
 
-Milonga es un código neutrónico de núcleo escrito como \emph{plugin} de wasora (ver Ref.~\cite{wasora}). Con la incorporación del método de las características como formulación de transporte en 2D se ha abierto el panorama a los cálculos de celda. En este trabajo se describe la implementación de MOC 2D y se presentan algunos resultados preliminares. Por último, se hará un breve hincapié en futuras incorporaciones.
+Milonga es un código neutrónico de núcleo escrito como \emph{plugin} de wasora~\cite{wasora}. Con la incorporación del método de las características como formulación de transporte en 2D se ha abierto el panorama a los cálculos de celda. En este trabajo se describe la implementación de MOC 2D y se presentan algunos resultados preliminares. Por último, se hará un breve hincapié en futuras incorporaciones.
 
 
 \section{Método de las Características}
@@ -262,7 +266,7 @@ Finalmente, se listan algunas definiciones usuales y otras específicas a MOC:
 
 \subsection{Formulación de MOC}
 
-La formulación multigrupo de la ecuación de transporte integro-diferencial estacionaria es (ver Ref.\cite{handbookpag760})
+La formulación multigrupo de la ecuación de transporte integro-diferencial estacionaria es~\cite{henry,lamarsh,duderstadt,glasstone,lewis,stammler,handbook-ingnuclear}
 
 \begin{equation}
  \label{eq:transportemultigrupo}
@@ -271,7 +275,7 @@ La formulación multigrupo de la ecuación de transporte integro-diferencial est
 \end{equation}
 
 \noindent
-donde para el caso sin fuentes externas, el término de fuente posee las contribuciones de fisión (isotrópica) y \emph{scattering}
+donde, para el caso sin fuentes externas, el término de fuente posee las contribuciones de fisión (isotrópica) y \emph{scattering}
 
 \begin{equation} \label{eq:fuentemultigrupo-1}
  q_g(\vec{x}, \boldsymbol{\hat{\Omega}}) =
@@ -291,7 +295,7 @@ Suponiendo \emph{scattering} isotrópico y utilizando la definición del flujo e
  \right).
 \end{equation}
 
-Aplicando MOC a la ecuación de transporte multigrupo (\ref{eq:transportemultigrupo}) se obtiene una ecuación diferencial lineal de primer orden (ver Ref.\cite{glaston-handbook})
+Aplicando MOC a la ecuación de transporte multigrupo~\eqref{eq:transportemultigrupo} se obtiene una ecuación diferencial lineal de primer orden~\cite{glasstone,handbook-ingnuclear}
 
 \begin{equation} \label{eq:caracteristica}
  \frac{d}{ds}\psi_g(\vec{r_0}+s\boldsymbol{\hat{\Omega}},\boldsymbol{\hat{\Omega}}) 
@@ -300,7 +304,7 @@ Aplicando MOC a la ecuación de transporte multigrupo (\ref{eq:transportemultigr
 \end{equation}
 
 \noindent
-que será aplicada a cada segmento de cada \emph{track} trazado sobre la geometría a analizar. Estas líneas responden a la ecuación $\vec{r_0}+s\boldsymbol{\hat{\Omega}}$, donde $s$ es la distancia al punto $\vec{r_0}$ medida sobre la dirección $\boldsymbol{\hat{\Omega}}$. Como se verá a continuación, realizando un \emph{ray tracing} sobre la geometría del problema a partir de la selección de diferentes puntos de inicio $\vec{r_0}$ y direcciones $\boldsymbol{\hat{\Omega}}$ y resolviendo la ecuación característica~(\ref{eq:caracteristica}) sobre cada uno de los segmentos de cada \emph{tracks}, es posible obtener la información necesaria para la determinación del flujo escalar en cada región y grupo de energía. Al discretizar la ecuación~(\ref{eq:caracteristica}) y aplicar la notación descripta para este trabajo, se obtiene
+que será aplicada a cada segmento de cada \emph{track} trazado sobre la geometría a analizar. Estas líneas responden a la ecuación $\vec{r_0}+s\boldsymbol{\hat{\Omega}}$, donde $s$ es la distancia al punto $\vec{r_0}$ medida sobre la dirección $\boldsymbol{\hat{\Omega}}$. Como se verá a continuación, realizando un \emph{ray tracing} sobre la geometría del problema a partir de la selección de diferentes puntos de inicio $\vec{r_0}$ y direcciones $\boldsymbol{\hat{\Omega}}$ y resolviendo la ecuación característica~\eqref{eq:caracteristica} sobre cada uno de los segmentos de cada \emph{tracks}, es posible obtener la información necesaria para la determinación del flujo escalar en cada región y grupo de energía. Al discretizar la ecuación~\eqref{eq:caracteristica} y aplicar la notación descripta para este trabajo, se obtiene
 
 \begin{equation} \label{eq:edo-disc}
  \frac{d}{ds}\psi_{i,g,m,k} (s)
@@ -319,7 +323,7 @@ donde además se ha asumido la aproximación de fuente plana en cada región y p
  \right).
 \end{equation}
 
-La ecuación~(\ref{eq:edo-disc}) puede ser resuelta para cada segmento de cada \emph{track}, siempre y cuando se conozca la condici\'on inicial. En particular, el resultado para el flujo angular a la salida de un segmento es
+La ecuación~\eqref{eq:edo-disc} puede ser resuelta para cada segmento de cada \emph{track}, siempre y cuando se conozca la condici\'on inicial. En particular, el resultado para el flujo angular a la salida de un segmento es
 
 \begin{equation}
  \psi^{\text{out}}_{i,g,m,k} = \psi^{\text{in}}_{i,g,m,k} \cdot e^{-\tau_{i,g,m,k}}
@@ -335,7 +339,7 @@ siendo $\tau_{i,g,m,k}$ el camino óptico, definido como el producto $l_{i,m,k} 
  \left( \psi^{\text{in}}_{i,g,m,k} - \frac{q_{i,g}}{\Sigma^t_{i,g}} \right) \left(1 - e^{-\tau_{i,g,m,k}} \right).
 \end{equation}
 
-El valor medio del flujo angular del segmento $k$ correspondiente a la región $i$, grupo $g$ y dirección polar $p$ se obtiene integrando la soluci\'on de la ecuación~(\ref{eq:edo-disc}) de la siguiente forma
+El valor medio del flujo angular del segmento $k$ correspondiente a la región $i$, grupo $g$ y dirección polar $p$ se obtiene integrando la soluci\'on de la ecuación~\eqref{eq:edo-disc} de la siguiente forma
 
 \begin{multline}
  \overline{\psi}_{i,g,m,k} =
@@ -344,7 +348,7 @@ El valor medio del flujo angular del segmento $k$ correspondiente a la región $
 \end{multline}
 
 \noindent
-Luego, utilizando el resultado de la ecuación~(\ref{eq:delta-psi}) sobre la expresi\'on del flujo angular medio, se obtiene
+Luego, utilizando el resultado de la ecuación~\eqref{eq:delta-psi} sobre la expresi\'on del flujo angular medio, se obtiene
 
 \begin{equation} \label{eq:flujo-ang-medio-en-segmento}
  \overline{\psi}_{i,g,m,k} = \frac{q_{i,g}}{\Sigma^t_{i,g}} + \frac{\Delta \psi_{i,g,m,k}}{\tau_{i,g,m,k}}.
@@ -357,7 +361,7 @@ El flujo angular medio en la región $i$, grupo $g$ y ángulo $\boldsymbol{\hat{
 \end{equation}
 
 \noindent
-donde $k(i,m)$ representa los segmentos correspondientes a una región $i$ con dirección $\boldsymbol{\hat{\Omega}}_m$ y $\delta_m$ la separaci\'on entre segmentos para un dado ángulo azimutal especificado en $\boldsymbol{\hat{\Omega}}_m$. Para encontrar al flujo escalar en una región $i$ y a un grupo $g$, basta con integrar en ángulo s\'olido la expresi\'on obtenida en~(\ref{eq:flujo-ang-medio-en-region}) de la siguiente manera
+donde $k(i,m)$ representa los segmentos correspondientes a una región $i$ con dirección $\boldsymbol{\hat{\Omega}}_m$ y $\delta_m$ la separaci\'on entre segmentos para un dado ángulo azimutal especificado en $\boldsymbol{\hat{\Omega}}_m$. Para encontrar al flujo escalar en una región $i$ y a un grupo $g$, basta con integrar en ángulo s\'olido la expresi\'on obtenida en~\eqref{eq:flujo-ang-medio-en-region} de la siguiente manera
 
 \begin{equation} \label{eq:flujo-escalar-1}
  \phi_{i,g} = \int_{4\pi} \overline{\psi}_{i,g} (\boldsymbol{\hat{\Omega}}) \, d\boldsymbol{\hat{\Omega}} \approx 
@@ -365,7 +369,7 @@ donde $k(i,m)$ representa los segmentos correspondientes a una región $i$ con d
 \end{equation}
 
 \noindent
-En este caso, $w_m$ son los pesos de la cuadratura angular normalizados, de forma que $\sum_m w_m = \sum_a \sum_p w_a w_p = \sum_a w_a \sum_p w_p = 1$. En primera instancia, es necesario implementar el resultado obtenido en la ecuación~(\ref{eq:flujo-ang-medio-en-region}) en~(\ref{eq:flujo-escalar-1})
+En este caso, $w_m$ son los pesos de la cuadratura angular normalizados, de forma que $\sum_m w_m = \sum_a \sum_p w_a w_p = \sum_a w_a \sum_p w_p = 1$. En primera instancia, es necesario implementar el resultado obtenido en la ecuación~\eqref{eq:flujo-ang-medio-en-region} en~\eqref{eq:flujo-escalar-1}
 
 \begin{equation} \label{eq:flujo-escalar-2}
  \phi_{i,g} =
@@ -376,7 +380,7 @@ En este caso, $w_m$ son los pesos de la cuadratura angular normalizados, de form
 \noindent
 En la anterior ecuación puede verse que el t\'ermino $A_{i,m} = \sum_{k(i,m)} l_{i,k} \delta_m = \delta_m \sum_{k(i,m)} l_{i,k}$ representa el área de la región $i$ computada a partir de los segmentos $l_{i,k}$ (proyectados sobre el plano $x - y$) y con ángulo azimutal contenido en $\boldsymbol{\hat{\Omega}}_m$. En un \emph{ray tracing} con la suficiente densidad de lineas puede suponerse que el área obtenida a partir de esta expresi\'on es independiente de la dirección azimutal de los segmentos, motivo por el cual $A_{i,m} = A_i$ y es retirado de la sumatoria sobre $m$.
 
-Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as incorporando el resultado de la ecuación~(\ref{eq:flujo-ang-medio-en-segmento}) sobre~(\ref{eq:flujo-escalar-2})
+Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as incorporando el resultado de la ecuación~\eqref{eq:flujo-ang-medio-en-segmento} sobre~\eqref{eq:flujo-escalar-2}
 
 \begin{multline} \label{eq:flujo-escalar-3}
  \phi_{i,g} =
@@ -386,15 +390,13 @@ Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as
  .
 \end{multline}
 
-La resolución de las ecuaciones~(\ref{eq:fuente-isotropica}), (\ref{eq:delta-psi}) y~(\ref{eq:flujo-escalar-3}) permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~(\ref{eq:flujo-escalar-3}) a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~(\ref{eq:delta-psi}). Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un (\ref{eq:fuente-isotropica}).
+La resolución de las ecuaciones~\eqref{eq:fuente-isotropica}, \eqref{eq:delta-psi} y~\eqref{eq:flujo-escalar-3} permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~\eqref{eq:flujo-escalar-3} a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~\eqref{eq:delta-psi}. Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un \eqref{eq:fuente-isotropica}.
 
 \section{Geometr\'ias en milonga}
 
 Las geometrias en milonga se interpretan a traves de mallas, ya sean estructuradas o no estructuradas. 
 
-\subsection{Mallas estructuradas}
-
-\subsection{Mallas no estructuradas}
+\subsection{Mallas estructuradas y no estructuradas}
 
 \subsection{Ray tracing de mallas 2D}
 
@@ -403,6 +405,7 @@ Las geometrias en milonga se interpretan a traves de mallas, ya sean estructurad
 se deberia hacer un modulo mas eficiente para cargar geometrias.
 
 \section{MOC solver}
+aca hacemos un grafico tambien de como recorremos los rayos en una masha
 
 \section{Input}
 
