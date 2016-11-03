@@ -404,7 +404,19 @@ caso particular de moc: tienen que ser un dominio rectangular, pero oprque es as
 
 \subsection{\emph{Ray tracing} de mallas 2D}
 
-El proceso de \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de toda las estructuras de datos que almacenan la información de los \emph{tracks}: segmentos que los forman y la región a la que cada uno de ellos pertenece, condiciones de contorno.Como hemos visto, actualmente la implementación de MOC en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado. 
+La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico. 
+
+Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tiene un espaciado tal que forman recorridos cerrados. 
+
+mostramos un ejemplo de figura de tracks ciclicos
+
+especificamos que tipo de mallas podemos trackear (elementos de cualquier tipo)
+
+checkeamos los volumenes frente a los verdaderos (es opcional)
+
+comentamos que si se supera tal tau, los segmentos los cortamos
+
+dependiendo de la condicion de contorno, los tracks ciclicos se unen de diferentes formas
 
 
 \subsection{Discusi\'on acerca de geometr\'ias}
