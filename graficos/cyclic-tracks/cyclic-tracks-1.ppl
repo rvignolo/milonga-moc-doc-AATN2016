@@ -1,0 +1,21 @@
+#Tamanyo A4 apaisado.
+set width 22*unit(cm)
+set papersize a4
+set preamble "\usepackage{amsmath}"
+
+set key above
+load "styles.ppl"
+
+set xrange [* : *]
+set yrange [* : *]
+
+set nomxtics
+set nomytics
+
+set noxtics
+set noytics
+
+set terminal pdf
+set output 'cyclic-tracks-1.pdf'
+
+plot "./gnuplot_segment_points_ll_loop.dat-1" u 1:2 w l ti ''

@@ -1,0 +1,22 @@
+#Tamanyo A4 apaisado.
+set width 22*unit(cm)
+set papersize a4
+set preamble "\usepackage{amsmath}"
+
+set key above
+load "styles.ppl"
+
+set xrange [* : *]
+set yrange [* : *]
+
+set nomxtics
+set nomytics
+
+set noxtics
+set noytics
+
+set terminal pdf
+set output 'mesh-2.pdf'
+
+plot "./gnuplot_mesh.dat-2" u 1:2 w l color black ti '',\
+     "./gnuplot_mesh.dat-2" u 1:2 w p color black pt 20 ps 0.5 ti ''

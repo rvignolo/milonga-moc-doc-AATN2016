@@ -79,6 +79,8 @@
 \usepackage{xltxtra}
 \usepackage{siunitx}
 
+\numberwithin{equation}{section}
+
 
 \usepackage{booktabs}
 \usepackage{lscape}
@@ -404,19 +406,42 @@ caso particular de moc: tienen que ser un dominio rectangular, pero oprque es as
 
 \subsection{\emph{Ray tracing} de mallas 2D}
 
-La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico. 
+La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico, tal como puede verse en la figura~\ref{fig:cyclic-tracks} y se describe a continuación. Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tienen un espaciado tal que forman recorridos cerrados. En conclusión, para realizar un trazado de \emph{tracks} en un dominio de estas características, solo es necesario conocer las dimensiones de la \emph{bounding box} de la geometría y datos de entrada: densidad o espaciado de líneas y número de ángulos azimutales.
 
-Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tiene un espaciado tal que forman recorridos cerrados. 
+\begin{figure}[!h]
+ \begin{center}
+  \subfloat[\label{fig:cyclic-tracks-1}]{\includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-1.pdf}} 
+  \subfloat[\label{fig:cyclic-tracks-2}]{ \includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-2.pdf}}\\
+  \caption{\emph{Tracks} de dos \emph{ray tracing} cíclicos trazados sobre un dominio rectangular. La figura~\ref{fig:cyclic-tracks-1} permite visualizar el mecanismo del trazado de líneas, mientras que la figura~\ref{fig:cyclic-tracks-2} demuestra el resultado obtenido al aplicar el mismo procedimiento pero considerando una mayor discretización de ángulos azimutales y densidad de líneas.}
+  \label{fig:cyclic-tracks}
+ \end{center}
+\end{figure}
 
-mostramos un ejemplo de figura de tracks ciclicos
+La principal ventaja de utilizar \emph{cyclic tracking} es el manejo de las condiciones de contorno debido a que no es necesario realizar aproximaciones de ningún tipo. Si la condición de contorno es de vacío, el flujo angular entrante a determinado \emph{track} es simplemente nulo. Para los casos con condiciones de contorno reflectivas o periódicas, el flujo angular entrante a cada \emph{track} es igual al flujo angular saliente de algún otro (dependiendo la condición de contorno). En este sentido, milonga conecta adecuadamente los \emph{tracks}.
 
-especificamos que tipo de mallas podemos trackear (elementos de cualquier tipo)
+Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos correspondientes a cada región que atraviesan y así obtener la información necesaria para computar las variaciones del flujo angular a partir de la ecuación~\eqref{eq:delta-psi}. En la figura~\ref{fig:mesh-and-segments-1} se presentan, por un lado un mallado conformado mediante \emph{delaunay} y, por el otro, los segmentos coloreados por región resultantes de un \emph{ray tracing}. En este caso, la espaciado entre líneas y número de ángulos $\varphi$ seleccionados no permiten distinguir los segmentos graficados. Por este motivo, en la figura~\ref{fig:mesh-and-segments-2} se presenta el \emph{ray tracing} sobre una malla con elementos recombinados a partir de la malla en~\ref{fig:mesh-1} y parámetros de \emph{tracking} que permiten visualizar los segmentos de forma individual.
 
-checkeamos los volumenes frente a los verdaderos (es opcional)
+\begin{figure}[!h]
+ \begin{center}
+  \subfloat[\label{fig:mesh-1}]{\includegraphics[width=0.489\linewidth]{graficos/meshes-and-segments/mesh-1.pdf}} 
+  \subfloat[\label{fig:segments-1}]{ \includegraphics[width=0.511\linewidth]{graficos/meshes-and-segments/segments-1.pdf}}\\
+  \caption{\ref{fig:mesh-1} presenta la malla de un determinado problema y~\ref{fig:segments-1} la segmentación de los \emph{tracks} sobre la misma. No es posible visualizar los segmentos de forma independiente debido a la cantidad de ángulos $\varphi$ y separación de líneas seleccionada.}
+  \label{fig:mesh-and-segments-1}
+ \end{center}
+\end{figure}
 
-comentamos que si se supera tal tau, los segmentos los cortamos
+\begin{figure}[!h]
+ \begin{center}
+  \subfloat[\label{fig:mesh-2}]{\includegraphics[width=0.489\linewidth]{graficos/meshes-and-segments/mesh-2.pdf}}
+  \subfloat[\label{fig:segments-2}]{ \includegraphics[width=0.511\linewidth]{graficos/meshes-and-segments/segments-2.pdf}}\\
+  \caption{Con el fin de demostrar la capacidad de realizar \emph{ray tracings} sobre diferentes elementos y, además, poner en evidencia los segmentos no visibles en la figura~\ref{fig:segments-1}, se presentan las figuras~\ref{fig:mesh-2} y~\ref{fig:segments-2}.}
+  \label{fig:mesh-and-segments-2}
+ \end{center}
+\end{figure}
 
-dependiendo de la condicion de contorno, los tracks ciclicos se unen de diferentes formas
+Opcionalmente, milonga efectúa la comparación de las áreas reales de cada región y las computadas a partir del \emph{tracking} de la malla, indicando si es necesario modificar sus parámetros. Por otro lado, la evaluación de la función exponencial de la ecuación~\eqref{eq:delta-psi} puede ser sustituida por una aproximación lineal por partes, requiriendo eventualmente la segmentación de segmentos dentro de una misma región ya que se podría incurrir en errores mayores a los deseados~\cite{openmoc2014}.
+
+
 
 
 \subsection{Discusi\'on acerca de geometr\'ias}
