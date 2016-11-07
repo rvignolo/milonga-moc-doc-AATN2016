@@ -209,6 +209,10 @@ Buenos Aires, November 2016
 
 \selectlanguage{spanish}
 
+% nombre de tabla
+\renewcommand{\tablename}{Tabla}
+\rowcolors{1}{black!10}{black!0}
+
 \tableofcontents
 \pagebreak
 
@@ -253,6 +257,7 @@ Por otra parte, las secciones eficaces responden a la nomenclatura usual:
 \renewcommand\labelitemi{$\cdot$}
  \item $\Sigma^s_{g^\prime \rightarrow g}$: sección eficaz de \emph{scattering} de grupo $g^\prime$ a $g$;
  \item $\Sigma^t_g$: sección eficaz total de grupo $g$;
+ \item $\Sigma^a_g$: sección eficaz de absorción de grupo $g$; y
  \item $\Sigma^f_g$: sección eficaz de fisión de grupo $g$; y
  \item $\nu$: número de neutrones por fisión.
 \end{itemize}
@@ -396,7 +401,27 @@ Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as
 
 La resolución de las ecuaciones~\eqref{eq:fuente-isotropica}, \eqref{eq:delta-psi} y~\eqref{eq:flujo-escalar-3} permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~\eqref{eq:flujo-escalar-3} a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~\eqref{eq:delta-psi}. Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un \eqref{eq:fuente-isotropica}.
 
-Por \'ultimo, por completitud, conviene detallar las cuadraturas azimutales y polares que pueden utilizarse para aproximar la integral sobre \'angulo s\'olido. 
+Por completitud, convienen detallar las cuadraturas azimutales y polares que pueden utilizarse para aproximar la integral sobre \'angulo s\'olido. Se ha decido normalizar los pesos $w_m$, de forma que $\sum_a w_a = 1$ y $\sum_p w_p = 1$. En cuanto a la cuadratura azimutal, la forma más simple de obtener cada ángulo $\varphi_a$ es dividiendo el dominio azimutal en ángulos equiespaciados:
+
+\begin{equation}
+ \Delta \varphi_a = \frac{2\pi}{A},
+\end{equation}
+
+\noindent
+siendo $A$ el número total de ángulos azimutales. Sin embargo, como se verá en la sección~\ref{sec:ray-tracing}, pequeñas correcciones sobre cada $\varphi_a$ deben ser realizadas con el fin de realizar un \emph{ray tracing} cíclico. Milonga elige cada ángulo azimutal $\varphi_a$ con $a \in \left\lbrace 0, 1, ..., A-1 \right\rbrace$ mediante
+
+\begin{equation}
+ \varphi_a = \frac{2\pi}{A} \left( a + \frac{1}{2} \right).
+\end{equation}
+
+\noindent
+Posteriormente, cada ángulo $\varphi_a$ se corrige de forma tal que el \emph{ray tracing} sea cíclico. Luego, el peso asociado a $\varphi_a$ se obtiene a partir de
+
+\begin{equation}
+ w_a = \frac{1}{4\pi} \left( \varphi_{a+1} - \varphi_{a-1} \right).
+\end{equation}
+
+Milonga trabaja con diferentes cuadraturas polares descriptas, en su mayoría, en~\cite{handbook-ingnuclear} y~\cite{tabuchi}. Entre ellas, es posible hacer uso de cuadraturas tipo \emph{equal angle}, \emph{equal weight}, Gauss-Legendre, Leonard y Tabuchi-Yamamoto (seleccionada por defecto).
 
 \section{Geometr\'ias en milonga}
 
@@ -406,7 +431,7 @@ caso particular de moc: tienen que ser un dominio rectangular, pero oprque es as
 
 \subsection{Mallas estructuradas y no estructuradas}
 
-\subsection{\emph{Ray tracing} de mallas 2D}
+\subsection{\emph{Ray tracing} de mallas 2D} \label{sec:ray-tracing}
 
 La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico, tal como puede verse en la figura~\ref{fig:cyclic-tracks} y se describe a continuación. Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tienen un espaciado tal que forman recorridos cerrados. En conclusión, para realizar un trazado de \emph{tracks} en un dominio de estas características, solo es necesario conocer las dimensiones de la \emph{bounding box} de la geometría y datos de entrada: densidad o espaciado de líneas y número de ángulos azimutales.
 
@@ -414,7 +439,7 @@ La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resol
  \begin{center}
   \subfloat[\label{fig:cyclic-tracks-1}]{\includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-1.pdf}} 
   \subfloat[\label{fig:cyclic-tracks-2}]{ \includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-2.pdf}}\\
-  \caption{\emph{Tracks} de dos \emph{ray tracing} cíclicos trazados sobre un dominio rectangular. La figura~\ref{fig:cyclic-tracks-1} permite visualizar el mecanismo del trazado de líneas, mientras que la figura~\ref{fig:cyclic-tracks-2} demuestra el resultado obtenido al aplicar el mismo procedimiento pero considerando una mayor discretización de ángulos azimutales y densidad de líneas.}
+  \caption{\emph{Tracks} de dos \emph{ray tracing} cíclicos trazados sobre un dominio rectangular. La figura~\ref{fig:cyclic-tracks-1} permite visualizar el mecanismo del trazado de líneas, mientras que la figura~\ref{fig:cyclic-tracks-2} demuestra el resultado obtenido al aplicar el mismo procedimiento pero considerando una mayor discretización en ángulos azimutales y densidad de líneas.}
   \label{fig:cyclic-tracks}
  \end{center}
 \end{figure}
@@ -427,7 +452,7 @@ Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos c
  \begin{center}
   \subfloat[\label{fig:mesh-1}]{\includegraphics[width=0.489\linewidth]{graficos/meshes-and-segments/mesh-1.pdf}} 
   \subfloat[\label{fig:segments-1}]{ \includegraphics[width=0.511\linewidth]{graficos/meshes-and-segments/segments-1.pdf}}\\
-  \caption{\ref{fig:mesh-1} presenta la malla de un determinado problema y~\ref{fig:segments-1} la segmentación de los \emph{tracks} sobre la misma. No es posible visualizar los segmentos de forma independiente debido a la cantidad de ángulos $\varphi$ y separación de líneas seleccionada.}
+  \caption{(\ref{fig:mesh-1}) presenta la malla de un determinado problema y~(\ref{fig:segments-1}) la segmentación de los \emph{tracks} sobre la misma. No es posible visualizar los segmentos de forma independiente debido a la cantidad de ángulos $\varphi$ y separación de líneas seleccionada.}
   \label{fig:mesh-and-segments-1}
  \end{center}
 \end{figure}
@@ -449,13 +474,13 @@ aca hacemos un grafico tambien de como recorremos los rayos en una masha
 
 \section{Sintaxis}
 
-La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. M\'as all\'a de que la documentaci\'on pueda diferir de la actual implementación en milonga, mucho de esto puede ser consultado en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}. Por otro lado, las consultas a los desarrolladores del c\'odigo son m\'as que bienvenidas. 
+La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. Mucho de esto puede ser consultado en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}, m\'as all\'a de que la documentaci\'on disponible pueda diferir de la actual implementación en milonga. Por otro lado, las consultas a los desarrolladores del c\'odigo son m\'as que bienvenidas. 
 
 La definici\'on de un problema a resolver con el m\'etodo de las características requiere de algunas nuevas consideraciones. En primer lugar, la formulación MOC necesita ser provista de una estructura de \emph{ray tracing}. Milonga permite, en un mismo \emph{input}, generar diferentes estructuras de este tipo sobre una misma o diferentes mallas mediante las siguientes sentencias
 
 \begin{lstlisting}[style=wasora]
-TRACK_MESH MESH unstructured N_AZIM_ANGLES  24 TRACK_SPACING 0.02 TINY_STEP 1e-3 NAME track_1 DO_NOT_CHECK_VOLUMES
-TRACK_MESH MESH unstructured N_AZIM_ANGLES  32 TRACK_DENS   20.0  TINY_STEP 1e-3 NAME track_2
+TRACK_MESH MESH unstructured N_AZIM_ANGLES 24 TRACK_SPACING 0.02 TINY_STEP 1e-3 NAME track_1 DO_NOT_CHECK_VOLUMES
+TRACK_MESH MESH unstructured N_AZIM_ANGLES 32 TRACK_DENS   20.00 TINY_STEP 1e-3 NAME track_2
 \end{lstlisting}
 
 \noindent
@@ -483,11 +508,54 @@ Si bien la incorporaci\'on del m\'etodo de las características en milonga se en
 
 \subsection{\emph{Benchmarks} de medio homog\'eneo infinito}
 
-Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que la formulación MOC de milonga, al resolver sobre las l\'ineas de trazo, satisface la relaci\'on de conservaci\'on planteada en la ecuación de transporte~\eqref{eq:transportemultigrupo}. En este caso, es indiferente que geometr\'ia se seleccione para resolver los problemas. Las secciones eficaces de ambos \emph{benchmarks} se detallan en la tabla~\ref{} y los resultados obtenidos en~\ref{}.
+Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que la formulación MOC de milonga, al resolver sobre las l\'ineas de trazo, satisface la relaci\'on de conservaci\'on planteada en la ecuación de transporte~\eqref{eq:transportemultigrupo}. En este caso, es indiferente que geometr\'ia se seleccione para resolver los problemas. Las secciones eficaces de ambos \emph{benchmarks} se detallan en las tablas~\ref{tabla:xs-pua} y~\ref{tabla:xs-urr}, mientras que los resultados obtenidos se listan en la tabla~\ref{tabla:k-infty}. Puede verse la perfecta concordancia con los valores de referencia.
+
+{
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{cccccccc}
+\emph{Benchmark}  & $g$ & $\chi_g$ & $\Sigma^{f}_g$ & $\nu\Sigma^{f}_g$ & $\Sigma^{a}_g$ & $\Sigma^{t}_g$ & $\Sigma^s_{1 \rightarrow 1}$ \\
+Pua-1-0-IN & \num{1} & \num{1.0} & \num{0.0816} & \num{0.264384} & \num{0.101184} & \num{0.3264} & \num{0.225216}
+\end{tabular}
+\caption{\label{tabla:xs-pua} Secciones eficaces en~\si{\per\centi\metre} para el \emph{benchmark} de medio homogéneo infinito a un grupo de energía.}
+\end{center}
+\end{table}
+}
+
+{
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{ccccccccccccc}
+\small \emph{Benchmark}  & \small $g$ & \small $\chi_g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{a}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ & \small $\Sigma^s_{g \rightarrow 3}$ & \small $\Sigma^s_{g \rightarrow 4}$ & \small $\Sigma^s_{g \rightarrow 5}$ & \small $\Sigma^s_{g \rightarrow 6}$ \\
+\small{URR-6-0-IN} & \tiny \num{1} & \tiny \num{0.48} & \tiny \num{0.006} & \tiny \num{0.018} & \tiny \num{0.012} & \tiny \num{0.240} & \tiny \num{0.024} & \tiny \num{0.171} & \tiny \num{0.033} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
+           & \tiny \num{2} & \tiny \num{0.02} & \tiny \num{0.060} & \tiny \num{0.150} & \tiny \num{0.100} & \tiny \num{0.975} & \tiny \num{0.000} & \tiny \num{0.600} & \tiny \num{0.275} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
+           & \tiny \num{3} & \tiny \num{0.00} & \tiny \num{0.900} & \tiny \num{1.800} & \tiny \num{1.100} & \tiny \num{3.100} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{2.000} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
+           & \tiny \num{4} & \tiny \num{0.00} & \tiny \num{0.900} & \tiny \num{1.800} & \tiny \num{1.100} & \tiny \num{3.100} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{2.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
+           & \tiny \num{5} & \tiny \num{0.02} & \tiny \num{0.060} & \tiny \num{0.150} & \tiny \num{0.100} & \tiny \num{0.975} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.275} & \tiny \num{0.600} & \tiny \num{0.000} \\
+           & \tiny \num{6} & \tiny \num{0.48} & \tiny \num{0.006} & \tiny \num{0.018} & \tiny \num{0.012} & \tiny \num{0.240} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.033} & \tiny \num{0.171} & \tiny \num{0.024} 
+\end{tabular}
+\caption{\label{tabla:xs-urr} Secciones eficaces en~\si{\per\centi\metre} para el \emph{benchmark} de medio homogéneo infinito a seis grupo de energía.}
+\end{center}
+\end{table}
+}
+
+{
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{cccc}
+\emph{Benchmark}  & $k_{\infty}^{\text{referencia}}$ & $k_{\infty}^{\text{milonga}}$ & $\Delta  k_{\infty}$ \\
+Pua-1-0-IN        & \num{2.612903}                       & \num{2.612903}                    & \num{0.0}     \\
+URR-6-0-IN        & \num{1.600000}                       & \num{1.600000}                    & \num{0.0} 
+\end{tabular}
+\caption{\label{tabla:k-infty} Factores de multiplicación obtenidos con milonga y contrastados con los valores de referencia.}
+\end{center}
+\end{table}
+}
+
 
 \subsection{\emph{Benchmark} BWR}
 
-Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo, presentadas en la figura~\ref{fig:bwr-flujos}. 0.99937585
+Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo, presentadas en la figura~\ref{fig:bwr-flujos}. 0.99937585
 
 \begin{figure}[!h]
  \begin{center}
@@ -496,11 +564,30 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 \caption{\label{fig:bwr-mesh} Malla de celda BWR $\num{4} \times \num{4}$ obtenida a partir de gmsh~\cite{gmsh}. Los dos \emph{pins} que difieren de color son aquellos que poseen Gadolinio como veneno quemable. Aproximadamente, \num{6400} celdas forman la malla.}
 \end{figure}
 
+{
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{ccccccc}
+\small Material  & \small $g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ \\
+\small Combustible & \tiny \num{1} & \tiny \num{7.22964e-3} & \tiny \num{1.86278e-2} & \tiny \num{3.62022e-1} & \tiny \num{3.33748e-1} & \tiny \num{6.64881e-4} \\
+            & \tiny \num{2} & \tiny \num{1.41126e-1} & \tiny \num{3.44137e-1} & \tiny \num{5.72155e-1} & \tiny \num{0.0e-0}     & \tiny \num{3.80898e-1} \\
+\small Zircaloy    & \tiny \num{1} & \tiny \num{0.0e-0} & \tiny \num{0.0e-0} & \tiny \num{2.74144e-1} & \tiny \num{2.72377e-1} & \tiny \num{1.90838e-4} \\
+            & \tiny \num{2} & \tiny \num{0.0e-0} & \tiny \num{0.0e-0} & \tiny \num{2.80890e-1} & \tiny \num{0.0e-0}     & \tiny \num{2.77230e-1} \\
+\small \emph{Pin} Gadolinio  & \tiny \num{1} & \tiny \num{6.97904e-3} & \tiny \num{1.79336e-2} & \tiny \num{3.71785e-1} & \tiny \num{3.38096E-1} & \tiny \num{6.92807e-4} \\
+                      & \tiny \num{2} & \tiny \num{6.47524e-2} & \tiny \num{1.57929e-1} & \tiny \num{1.75e-0}    & \tiny \num{0.0e-0}     & \tiny \num{3.83204e-1} \\
+\small Agua Liviana & \tiny \num{1} & \tiny \num{0.0e-0} & \tiny \num{0.0e-0} & \tiny \num{6.40711e-1} & \tiny \num{6.07382e-1} & \tiny \num{3.31316e-2} \\
+             & \tiny \num{2} & \tiny \num{0.0e-0} & \tiny \num{0.0e-0} & \tiny \num{1.69131e-0} & \tiny \num{0.0e-0}     & \tiny \num{1.68428e-0} 
+\end{tabular}
+\caption{\label{tabla:xs-bwr} Secciones eficaces en~\si{\per\centi\metre} para el \emph{benchmark} de la celda BWR.}
+\end{center}
+\end{table}
+}
+
 \begin{figure}[!h]
  \begin{center}
   \subfloat[\label{fig:bwr-flujo-rapido}]{\includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-rapido.pdf}}
   \subfloat[\label{fig:bwr-flujo-termico}]{ \includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-termico.pdf}}\\
-  \caption{.}
+  \caption{Distribución espacial del flujo rápido~(\ref{fig:bwr-flujo-rapido}) y térmico~(\ref{fig:bwr-flujo-termico}) obtenido mediante la formulación moc en milonga.}
   \label{fig:bwr-flujos}
  \end{center}
 \end{figure}
