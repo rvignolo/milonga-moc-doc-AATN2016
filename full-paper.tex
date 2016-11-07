@@ -79,6 +79,8 @@
 \usepackage{xltxtra}
 \usepackage{siunitx}
 
+\input{syntax}
+
 \numberwithin{equation}{section}
 
 
@@ -394,7 +396,7 @@ Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as
 
 La resolución de las ecuaciones~\eqref{eq:fuente-isotropica}, \eqref{eq:delta-psi} y~\eqref{eq:flujo-escalar-3} permiten obtener la distribución espacial y energética del flujo escalar. Sin embargo, el proceso es iterativo hasta que los criterios de convergencia del flujo, fuentes, condiciones de contorno y valor de $k_{\text{eff}}$ sean satisfechos. Comúnmente, el nombre atribuido a cada una de estas iteraciones se conoce como \emph{transport sweep}. En cada \emph{transport sweep} se calcula el flujo escalar con~\eqref{eq:flujo-escalar-3} a partir de las contribuciones del flujo angular sobre cada región y grupo obtenidas mediante~\eqref{eq:delta-psi}. Posteriormente se computa el factor de multiplicación y se actualizan los valores de las fuentes $q_{i,g}$ seg\'un \eqref{eq:fuente-isotropica}.
 
-{\color{red}Falta hablar de las cuadraturas cuadraturas}
+Por \'ultimo, por completitud, conviene detallar las cuadraturas azimutales y polares que pueden utilizarse para aproximar la integral sobre \'angulo s\'olido. 
 
 \section{Geometr\'ias en milonga}
 
@@ -442,23 +444,77 @@ Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos c
 Opcionalmente, milonga efectúa la comparación de las áreas reales de cada región y las computadas a partir del \emph{tracking} de la malla, indicando si es necesario modificar sus parámetros. Por otro lado, la evaluación de la función exponencial de la ecuación~\eqref{eq:delta-psi} puede ser sustituida por una aproximación lineal por partes, requiriendo eventualmente la segmentación de segmentos dentro de una misma región ya que se podría incurrir en errores mayores a los deseados~\cite{openmoc2014}.
 
 
-
-
-\subsection{Discusi\'on acerca de geometr\'ias}
-
-se deberia hacer un modulo mas eficiente para cargar geometrias.
-
 \section{MOC solver}
 aca hacemos un grafico tambien de como recorremos los rayos en una masha
 
-\section{Input}
+\section{Sintaxis}
+
+La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. M\'as all\'a de que la documentaci\'on pueda diferir de la actual implementación en milonga, mucho de esto puede ser consultado en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}. Por otro lado, las consultas a los desarrolladores del c\'odigo son m\'as que bienvenidas. 
+
+La definici\'on de un problema a resolver con el m\'etodo de las características requiere de algunas nuevas consideraciones. En primer lugar, la formulación MOC necesita ser provista de una estructura de \emph{ray tracing}. Milonga permite, en un mismo \emph{input}, generar diferentes estructuras de este tipo sobre una misma o diferentes mallas mediante las siguientes sentencias
+
+\begin{lstlisting}[style=wasora]
+TRACK_MESH MESH unstructured N_AZIM_ANGLES  24 TRACK_SPACING 0.02 TINY_STEP 1e-3 NAME track_1 DO_NOT_CHECK_VOLUMES
+TRACK_MESH MESH unstructured N_AZIM_ANGLES  32 TRACK_DENS   20.0  TINY_STEP 1e-3 NAME track_2
+\end{lstlisting}
+
+\noindent
+donde \texttt{N_AZIM_ANGLES} hace referencia al n\'umero de \'angulos azimutales, \texttt{TRACK_SPACING} al espaciado entre l\'ineas, \texttt{TRACK_DENS} a la densidad de l\'ineas por \si{\centi\metre}, \texttt{TINY_STEP} a la magnitud a moverse sobre un \emph{track} para encontrar al elemento vecino y \texttt{DO_NOT_CHECK_VOLUMES} es una palabra clave que en el caso de indicarse se evita contrastar los volúmenes reales de cada elemento con los computados a partir del \emph{ray tracing} realizado. En este caso, dos trazados de l\'ineas se realizaron sobre la misma malla (\texttt{unstructured}) con diferentes par\'ametros, y se almacenaron bajo diferentes nombres: \texttt{track_1} y \texttt{track_2}.
+
+Cada estructura de \emph{ray tracing} tiene definida por defecto una cuadratura polar. Sin embargo, el usuario puede definir distintas cuadraturas polares a trav\'es de
+
+\begin{lstlisting}[style=wasora]
+POLAR_QUADRATURE NAME polar_1 N_POLAR_ANGLES 6 TYPE tabuchi_yamamoto
+\end{lstlisting}
+
+\noindent
+Otras cuadraturas polares disponibles son \texttt{equal_weight}, \texttt{equal_angle}, \texttt{gauss_legendre} y \texttt{leonard}. Por otra parte, el usuario puede proveer las cuadraturas a partir de la \emph{keyword} \texttt{DATA} en reemplazo de \texttt{TYPE}.
+
+Por \'ultimo, al definir el problema a resolver con la formulación MOC, debe proveerse de la estructura de \emph{ray tracing} y, en el caso de ser necesario, la cuadratura polar:
+
+\begin{lstlisting}[style=wasora]
+MILONGA_PROBLEM FORMULATION moc TRACK track_1 POLAR_QUADRATURE polar_1 ...
+\end{lstlisting}
+
 
 \section{Resultados}
 
+Si bien la incorporaci\'on del m\'etodo de las características en milonga se encuentra en una etapa de activo desarrollo, se presentan a modo ilustrativo algunos resultados obtenidos por medio de esta herramienta. En este contexto, en primera instancia se realizan dos \emph{benchmarks} de c\'alculo de medio infinito homog\'eneo reportados en~\cite{sood} y luego una celda heterog\'enea de BWR reportada en~\cite{hong} y~\cite{Mazumdar}. Estos c\'alculos permiten poner en evidencia la capacidad de la formulación MOC en milonga.
+
+\subsection{\emph{Benchmarks} de medio homog\'eneo infinito}
+
+Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que la formulación MOC de milonga, al resolver sobre las l\'ineas de trazo, satisface la relaci\'on de conservaci\'on planteada en la ecuación de transporte~\eqref{eq:transportemultigrupo}. En este caso, es indiferente que geometr\'ia se seleccione para resolver los problemas. Las secciones eficaces de ambos \emph{benchmarks} se detallan en la tabla~\ref{} y los resultados obtenidos en~\ref{}.
+
+\subsection{\emph{Benchmark} BWR}
+
+Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo, presentadas en la figura~\ref{fig:bwr-flujos}. 0.99937585
+
+\begin{figure}[!h]
+ \begin{center}
+  \includegraphics[width=0.6\linewidth]{graficos/bwr-gadolinio/bwr-gadolinio.pdf}
+ \end{center}
+\caption{\label{fig:bwr-mesh} Malla de celda BWR $\num{4} \times \num{4}$ obtenida a partir de gmsh~\cite{gmsh}. Los dos \emph{pins} que difieren de color son aquellos que poseen Gadolinio como veneno quemable. Aproximadamente, \num{6400} celdas forman la malla.}
+\end{figure}
+
+\begin{figure}[!h]
+ \begin{center}
+  \subfloat[\label{fig:bwr-flujo-rapido}]{\includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-rapido.pdf}}
+  \subfloat[\label{fig:bwr-flujo-termico}]{ \includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-termico.pdf}}\\
+  \caption{.}
+  \label{fig:bwr-flujos}
+ \end{center}
+\end{figure}
+
+
+
 \section{Conclusiones}
+
+mejorar la definicion de geometrias
 
 \label{lastpage}
 
+
+\pagebreak
 \printbibliography
 
 \end{document}

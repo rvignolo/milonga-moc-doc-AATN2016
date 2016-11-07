@@ -1,0 +1,50 @@
+% remember to run
+%  $ ./syntax-tex.sh > wasora-keywords
+\input{wasora-keywords}
+
+\definecolor{was_fondo}{rgb}{0.97,0.97,0.92}
+\definecolor{was_keyword1}{rgb}{0.0,0.0,0.3}
+\definecolor{was_keyword2}{rgb}{0.0,0.2,0.0}
+\definecolor{was_variable}{rgb}{0.5,0.2,0.2}
+\definecolor{was_function}{rgb}{0.2,0.5,0.2}
+\definecolor{was_comment}{rgb}{0.5,0.5,0.5}
+
+\definecolor{bash_fondo}{rgb}{0.97,0.97,0.97}
+
+\newcommand{\MyHookSign}{\hbox{\ensuremath{\hookleftarrow}}}
+
+% \newlength{\inputlineshrink}
+% \setlength{\inputlineshrink}{-5pt}
+\lstdefinestyle{wasora}{
+  language=wasora,
+  basicstyle=\ttfamily\scriptsize,
+  commentstyle={\color{was_comment}\normalfont\textit},
+  keywordstyle=[1]{\color{was_keyword1}\ttfamily\textbf},
+  keywordstyle=[2]{\color{was_keyword2}\ttfamily\textbf},
+  keywordstyle=[3]{\color{was_variable}\textit},
+  keywordstyle=[4]{\color{was_function}\textbf},
+  backgroundcolor=\color{was_fondo},
+  showstringspaces=true,
+  breaklines=true,
+  breakatwhitespace=true,
+  prebreak={\space\MyHookSign},
+  escapechar=\@,
+  lineskip=-1pt,
+  captionpos=b,
+  xleftmargin=0.2cm,
+  xrightmargin=0.2cm,
+  framesep=0.2cm,
+  frame=single,
+}
+
+\lstdefinestyle{bash}{
+  language=,
+  basicstyle=\scriptsize\ttfamily,
+  backgroundcolor=\color{bash_fondo},
+  breaklines=true,
+  prebreak={\space\MyHookSign},
+  xleftmargin=0.2cm,
+  xrightmargin=0.2cm,
+  framesep=0.2cm,
+  frame=single,
+}
