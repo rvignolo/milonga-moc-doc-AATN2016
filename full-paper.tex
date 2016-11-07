@@ -469,8 +469,17 @@ Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos c
 Opcionalmente, milonga efectúa la comparación de las áreas reales de cada región y las computadas a partir del \emph{tracking} de la malla, indicando si es necesario modificar sus parámetros. Por otro lado, la evaluación de la función exponencial de la ecuación~\eqref{eq:delta-psi} puede ser sustituida por una aproximación lineal por partes, requiriendo eventualmente la segmentación de segmentos dentro de una misma región ya que se podría incurrir en errores mayores a los deseados~\cite{openmoc2014}.
 
 
-\section{MOC solver}
-aca hacemos un grafico tambien de como recorremos los rayos en una masha
+\section{MOC \emph{solver}}
+
+En esta sección se darán algunos detalles del algoritmo que resuelve la formulación de transporte a través del método de las características en milonga. En cada \emph{transport sweep} se calcula $\phi_{i,g}$
+
+\begin{figure}[!h]
+ \begin{center}
+  \includegraphics[width=1.0\linewidth]{graficos/solver/cyclic-tracks-1.pdf}
+ \end{center}
+\caption{\label{fig:tracks-solver} .}
+\end{figure}
+
 
 \section{Sintaxis}
 
@@ -514,8 +523,8 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{cccccccc}
-\emph{Benchmark}  & $g$ & $\chi_g$ & $\Sigma^{f}_g$ & $\nu\Sigma^{f}_g$ & $\Sigma^{a}_g$ & $\Sigma^{t}_g$ & $\Sigma^s_{1 \rightarrow 1}$ \\
-Pua-1-0-IN & \num{1} & \num{1.0} & \num{0.0816} & \num{0.264384} & \num{0.101184} & \num{0.3264} & \num{0.225216}
+\small \emph{Benchmark}  & \small $g$ & \small $\chi_g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{a}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{1 \rightarrow 1}$ \\
+\small Pua-1-0-IN & \tiny \num{1} & \tiny \num{1.0} & \tiny \num{0.0816} & \tiny \num{0.264384} & \tiny \num{0.101184} & \tiny \num{0.3264} & \tiny \num{0.225216}
 \end{tabular}
 \caption{\label{tabla:xs-pua} Secciones eficaces en~\si{\per\centi\metre} para el \emph{benchmark} de medio homogéneo infinito a un grupo de energía.}
 \end{center}
@@ -525,7 +534,7 @@ Pua-1-0-IN & \num{1} & \num{1.0} & \num{0.0816} & \num{0.264384} & \num{0.101184
 {
 \begin{table}[h!]
 \begin{center}
-\begin{tabular}{ccccccccccccc}
+\begin{tabular}{lcccccccccccc}
 \small \emph{Benchmark}  & \small $g$ & \small $\chi_g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{a}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ & \small $\Sigma^s_{g \rightarrow 3}$ & \small $\Sigma^s_{g \rightarrow 4}$ & \small $\Sigma^s_{g \rightarrow 5}$ & \small $\Sigma^s_{g \rightarrow 6}$ \\
 \small{URR-6-0-IN} & \tiny \num{1} & \tiny \num{0.48} & \tiny \num{0.006} & \tiny \num{0.018} & \tiny \num{0.012} & \tiny \num{0.240} & \tiny \num{0.024} & \tiny \num{0.171} & \tiny \num{0.033} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
            & \tiny \num{2} & \tiny \num{0.02} & \tiny \num{0.060} & \tiny \num{0.150} & \tiny \num{0.100} & \tiny \num{0.975} & \tiny \num{0.000} & \tiny \num{0.600} & \tiny \num{0.275} & \tiny \num{0.000} & \tiny \num{0.000} & \tiny \num{0.000} \\
@@ -542,10 +551,10 @@ Pua-1-0-IN & \num{1} & \num{1.0} & \num{0.0816} & \num{0.264384} & \num{0.101184
 {
 \begin{table}[h!]
 \begin{center}
-\begin{tabular}{cccc}
-\emph{Benchmark}  & $k_{\infty}^{\text{referencia}}$ & $k_{\infty}^{\text{milonga}}$ & $\Delta  k_{\infty}$ \\
-Pua-1-0-IN        & \num{2.612903}                       & \num{2.612903}                    & \num{0.0}     \\
-URR-6-0-IN        & \num{1.600000}                       & \num{1.600000}                    & \num{0.0} 
+\begin{tabular}{lccc}
+\small \emph{Benchmark}  & \small $k_{\infty}^{\text{referencia}}$  & \small $k_{\infty}^{\text{milonga}}$  & \small $\Delta  k_{\infty}$ \\
+\small Pua-1-0-IN        & \tiny \num{2.612903}                     & \tiny \num{2.612903}                  & \tiny \num{0.0}     \\
+\small URR-6-0-IN        & \tiny \num{1.600000}                     & \tiny \num{1.600000}                  & \tiny \num{0.0} 
 \end{tabular}
 \caption{\label{tabla:k-infty} Factores de multiplicación obtenidos con milonga y contrastados con los valores de referencia.}
 \end{center}
@@ -567,7 +576,7 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 {
 \begin{table}[h!]
 \begin{center}
-\begin{tabular}{ccccccc}
+\begin{tabular}{lcccccc}
 \small Material  & \small $g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ \\
 \small Combustible & \tiny \num{1} & \tiny \num{7.22964e-3} & \tiny \num{1.86278e-2} & \tiny \num{3.62022e-1} & \tiny \num{3.33748e-1} & \tiny \num{6.64881e-4} \\
             & \tiny \num{2} & \tiny \num{1.41126e-1} & \tiny \num{3.44137e-1} & \tiny \num{5.72155e-1} & \tiny \num{0.0e-0}     & \tiny \num{3.80898e-1} \\
