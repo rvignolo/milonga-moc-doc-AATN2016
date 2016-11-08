@@ -560,7 +560,7 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 
 \subsection{\emph{Benchmark} BWR}
 
-Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta las salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo neutrónico presentadas en la figura~\ref{fig:bwr-flujos}.
+Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta las salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo neutrónico presentadas en la figura~\ref{fig:bwr-flujos}. Por \'ultimo, la tabla~\ref{tabla:k-eff-bwr} presenta el resultado obtenido con milonga y lo contrasta al valor de referencia.
  
 \begin{figure}[!ht]
  \begin{center}
@@ -612,7 +612,7 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 
 \section{Conclusiones}
 
-La implementación del método de las características en milonga para resolver la formulación de transporte se encuentra, en principio, en buen camino. El trazo de líneas sobre mallas estructuras y no estructuradas como así también el \emph{solver} de potencia poseen una \emph{performance} satisfactoria. Aún así, numerosas mejoras serán volcadas dentro del código. Entre ellas se espera:
+La implementación del método de las características para resolver la formulación de transporte en milonga se encuentra, en principio, en buen camino. El trazo de líneas sobre mallas estructuras y no estructuradas como así también el \emph{solver} de potencias poseen una \emph{performance} satisfactoria. Aún así, numerosas mejoras serán volcadas dentro del código. Entre ellas se espera agregar:
 
 \begin{itemize}
 \renewcommand\labelitemi{$\cdot$}
@@ -622,7 +622,7 @@ La implementación del método de las características en milonga para resolver 
  \item incorporación de esquemas de aceleración del método (\emph{Nonlinear diffusion acceleration}, como por ejemplo \emph{Coarse Mesh Finite Difference}).
 \end{itemize}
 
-
+Milonga es un c\'odigo desarrollado durante el tiempo libre de sus colaboradores. Este tipo de trabajo presentado no solo tiene como fin demostrar las capacidades adquiridas por el programa, si no que también busca incorporar nuevos colaboradores que deseen unirse al desarrollo del mismo, aportando tanto ideas como implementándolas dentro del c\'odigo. 
 
 \pagebreak
 \printbibliography
