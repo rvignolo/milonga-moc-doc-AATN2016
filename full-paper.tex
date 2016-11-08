@@ -424,7 +424,7 @@ Posteriormente, cada ángulo $\varphi_a$ se corrige de forma tal que el \emph{ra
 Milonga trabaja con diferentes cuadraturas polares descriptas, en su mayoría, en~\cite{handbook-ingnuclear} y~\cite{tabuchi}. Entre ellas, es posible hacer uso de cuadraturas tipo \emph{equal angle}, \emph{equal weight}, Gauss-Legendre, Leonard y Tabuchi-Yamamoto (seleccionada por defecto).
 
 
-\section{\emph{Ray tracing} de mallas 2D} \label{sec:ray-tracing}
+\section{\emph{Ray tracing}}\label{sec:ray-tracing}
 
 La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontar el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. 
 
@@ -475,7 +475,7 @@ En esta sección se darán algunos detalles del algoritmo que resuelve la formul
 \caption{\label{fig:tracks-solver} Recorrido de \emph{tracks} en un \emph{transport sweep} de milonga. Los rayos de color se corresponden con aquellos que ya han sido recorridos y las flechas indican el sentido en que se los recorre.}
 \end{figure}
 
-
+\newpage
 \section{Sintaxis}
 
 La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. M\'as all\'a de que la documentaci\'on disponible pueda diferir de la actual implementación en wasora y milonga, información acerca de este tema puede ser consultada en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}. Por otro lado, las consultas a los desarrolladores de la \emph{suite} de wasora son m\'as que bienvenidas. 
@@ -612,9 +612,15 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 
 \section{Conclusiones}
 
-vamos bien encaminados, recien arrancamos
-mejorar la definicion de geometrias
+La implementación del método de las características en milonga para resolver la formulación de transporte se encuentra, en principio, en buen camino. El trazo de líneas sobre mallas estructuras y no estructuradas como así también el \emph{solver} de potencia poseen una \emph{performance} satisfactoria. Aún así, numerosas mejoras serán volcadas dentro del código. Entre ellas se espera:
 
+\begin{itemize}
+\renewcommand\labelitemi{$\cdot$}
+ \item descripción de geometrías no estructuradas a partir de líneas, arcos y círculos. Esto permitirá definir tanto menor cantidad de regiones como así también volúmenes más adecuados;
+ \item \emph{ray tracing} sobre dominios generales, aplicando correctamente condiciones de contorno;
+ \item paralelización del \emph{solver};
+ \item incorporación de esquemas de aceleración del método (\emph{Nonlinear diffusion acceleration}, como por ejemplo \emph{Coarse Mesh Finite Difference}).
+\end{itemize}
 
 
 
