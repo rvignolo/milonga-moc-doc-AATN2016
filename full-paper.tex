@@ -244,7 +244,7 @@ Debido a la gran cantidad de notación disponible en la bibliografía, es conven
  \item $k$: índice asociado a un segmento de un \emph{track}; $k$ generalmente viene acompañado de los índices $i$ y $m$ para representar los segmentos contenidos en la región $i$ con ángulo $\boldsymbol{\hat{\Omega}}_m$.
 \end{itemize}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
   \includegraphics[width=1.0\linewidth]{coords-indices-2.pdf}
  \end{center}
@@ -273,7 +273,7 @@ Finalmente, se listan algunas definiciones usuales y otras específicas a MOC:
  \item $l_{i,m,k}$: longitud del segmento $k$ con dirección angular $m$ dentro de la región $i$. Observando la figura~\ref{fig:coords-indices}, la igualdad $l_{i,m,k} = \frac{l_{i,k}}{\sin \theta_p}$ resulta obvia.
 \end{itemize}
 
-\subsection{Formulación de MOC}
+\subsection{Formulación}
 
 La formulación multigrupo de la ecuación de transporte integro-diferencial estacionaria es~\cite{henry,lamarsh,duderstadt,glasstone,lewis,stammler,handbook-ingnuclear}
 
@@ -348,7 +348,7 @@ siendo $\tau_{i,g,m,k}$ el camino óptico, definido como el producto $l_{i,m,k} 
  \left( \psi^{\text{in}}_{i,g,m,k} - \frac{q_{i,g}}{\Sigma^t_{i,g}} \right) \left(1 - e^{-\tau_{i,g,m,k}} \right).
 \end{equation}
 
-El valor medio del flujo angular del segmento $k$ correspondiente a la región $i$, grupo $g$ y dirección polar $p$ se obtiene integrando la soluci\'on de la ecuación~\eqref{eq:edo-disc} de la siguiente forma
+El valor medio del flujo angular del segmento $k$ correspondiente a la región $i$, grupo $g$ y dirección $\boldsymbol{\hat{\Omega}}_m$ se obtiene integrando la soluci\'on de la ecuación~\eqref{eq:edo-disc} de la siguiente forma
 
 \begin{multline}
  \overline{\psi}_{i,g,m,k} =
@@ -363,14 +363,14 @@ Luego, utilizando el resultado de la ecuación~\eqref{eq:delta-psi} sobre la exp
  \overline{\psi}_{i,g,m,k} = \frac{q_{i,g}}{\Sigma^t_{i,g}} + \frac{\Delta \psi_{i,g,m,k}}{\tau_{i,g,m,k}}.
 \end{equation}
 
-El flujo angular medio en la región $i$, grupo $g$ y ángulo $\boldsymbol{\hat{\Omega}}_m$ puede ser obtenido a partir de la contribuci\'on de cada segmento $k$ en la región $i$
+El flujo angular medio en la región $i$, grupo $g$ y dirección $\boldsymbol{\hat{\Omega}}_m$ puede ser obtenido a partir de la contribuci\'on de cada segmento $k$ en la región $i$
 
 \begin{equation} \label{eq:flujo-ang-medio-en-region}
- \overline{\psi}_{i,g,m} = \frac{\sum_{k(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \delta_m}{\sum_{k(i,m)} l_{i,k} \delta_m},
+ \overline{\psi}_{i,g,m} = \frac{\sum_{k \in K(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \delta_m}{\sum_{k \in K(i,m)} l_{i,k} \delta_m},
 \end{equation}
 
 \noindent
-donde $k(i,m)$ representa los segmentos correspondientes a una región $i$ con dirección $\boldsymbol{\hat{\Omega}}_m$ y $\delta_m$ la separaci\'on entre segmentos para un dado ángulo azimutal especificado en $\boldsymbol{\hat{\Omega}}_m$. Para encontrar al flujo escalar en una región $i$ y a un grupo $g$, basta con integrar en ángulo s\'olido la expresi\'on obtenida en~\eqref{eq:flujo-ang-medio-en-region} de la siguiente manera
+donde $k \in K(i,m)$ representa los segmentos correspondientes a una región $i$ con dirección $\boldsymbol{\hat{\Omega}}_m$ y $\delta_m$ la separaci\'on entre segmentos para un dado ángulo azimutal especificado en $\boldsymbol{\hat{\Omega}}_m$. Para encontrar al flujo escalar en una región $i$ y a un grupo $g$, basta con integrar en ángulo s\'olido la expresi\'on obtenida en~\eqref{eq:flujo-ang-medio-en-region} de la siguiente manera
 
 \begin{equation} \label{eq:flujo-escalar-1}
  \phi_{i,g} = \int_{4\pi} \overline{\psi}_{i,g} (\boldsymbol{\hat{\Omega}}) \, d\boldsymbol{\hat{\Omega}} \approx 
@@ -382,20 +382,20 @@ En este caso, $w_m$ son los pesos de la cuadratura angular normalizados, de form
 
 \begin{equation} \label{eq:flujo-escalar-2}
  \phi_{i,g} =
- 4\pi \sum_m \left( w_m \frac{\sum_{k(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \delta_m}{\sum_{k(i,m)} l_{i,k} \delta_m} \right) = 
- \frac{4\pi}{A_i} \sum_m \left( w_m \delta_m \sum_{k(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \right).
+ 4\pi \sum_m \left( w_m \frac{\sum_{k \in K(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \delta_m}{\sum_{k \in K(i,m)} l_{i,k} \delta_m} \right) = 
+ \frac{4\pi}{A_i} \sum_m \left( w_m \delta_m \sum_{k \in K(i,m)} \overline{\psi}_{i,g,m,k} l_{i,k} \right).
 \end{equation}
 
 \noindent
-En la anterior ecuación puede verse que el t\'ermino $A_{i,m} = \sum_{k(i,m)} l_{i,k} \delta_m = \delta_m \sum_{k(i,m)} l_{i,k}$ representa el área de la región $i$ computada a partir de los segmentos $l_{i,k}$ (proyectados sobre el plano $x - y$) y con ángulo azimutal contenido en $\boldsymbol{\hat{\Omega}}_m$. En un \emph{ray tracing} con la suficiente densidad de lineas puede suponerse que el área obtenida a partir de esta expresi\'on es independiente de la dirección azimutal de los segmentos, motivo por el cual $A_{i,m} = A_i$ y es retirado de la sumatoria sobre $m$.
+En la anterior ecuación puede verse que el t\'ermino $A_{i,m} = \sum_{k \in K(i,m)} l_{i,k} \delta_m = \delta_m \sum_{k \in K(i,m)} l_{i,k}$ representa el área de la región $i$ computada a partir de los segmentos $l_{i,k}$ (proyectados sobre el plano $x - y$) y con ángulo azimutal contenido en $\boldsymbol{\hat{\Omega}}_m$. En un \emph{ray tracing} con la suficiente densidad de lineas puede suponerse que el área obtenida a partir de esta expresi\'on es independiente de la dirección azimutal de los segmentos, motivo por el cual $A_{i,m} = A_i$ y es retirado de la sumatoria sobre $m$.
 
 Por último, la expresi\'on para el flujo escalar puede simplificarse aún m\'as incorporando el resultado de la ecuación~\eqref{eq:flujo-ang-medio-en-segmento} sobre~\eqref{eq:flujo-escalar-2}
 
 \begin{multline} \label{eq:flujo-escalar-3}
  \phi_{i,g} =
- \frac{4\pi}{A_i} \sum_m \left\lbrace w_m \delta_m \sum_{k(i,m)} \left[ l_{i,k} \left( \frac{q_{i,g}}{\Sigma^t_{i,g}} + \frac{\Delta \psi_{i,g,m,k}}{\tau_{i,g,m,k}} \right) \right] \right\rbrace \\ 
- = \frac{4\pi}{A_i} \cdot \frac{q_{i,g}}{\Sigma^t_{i,g}} \sum_m \left( w_m \delta_m \sum_{k(i,m)} l_{i,k} \right) + \frac{4\pi}{A_i \cdot \Sigma^t_{i,g}} \sum_m \left( w_m \delta_m \sin \theta_p \sum_{k(i,m)} \Delta \psi_{i,g,m,k} \right) \\ 
- = \frac{4\pi}{\Sigma^t_{i,g}} \left[ q_{i,g} + \frac{1}{A_i} \sum_m \left( w_m \delta_m \sin \theta_p \sum_{k(i,m)} \Delta \psi_{i,g,m,k} \right) \right]
+ \frac{4\pi}{A_i} \sum_m \left\lbrace w_m \delta_m \sum_{k \in K(i,m)} \left[ l_{i,k} \left( \frac{q_{i,g}}{\Sigma^t_{i,g}} + \frac{\Delta \psi_{i,g,m,k}}{\tau_{i,g,m,k}} \right) \right] \right\rbrace \\ 
+ = \frac{4\pi}{A_i} \cdot \frac{q_{i,g}}{\Sigma^t_{i,g}} \sum_m \left( w_m \delta_m \sum_{k \in K(i,m)} l_{i,k} \right) + \frac{4\pi}{A_i \cdot \Sigma^t_{i,g}} \sum_m \left( w_m \delta_m \sin \theta_p \sum_{k \in K(i,m)} \Delta \psi_{i,g,m,k} \right) \\ 
+ = \frac{4\pi}{\Sigma^t_{i,g}} \left[ q_{i,g} + \frac{1}{A_i} \sum_m \left( w_m \delta_m \sin \theta_p \sum_{k \in K(i,m)} \Delta \psi_{i,g,m,k} \right) \right]
  .
 \end{multline}
 
@@ -435,10 +435,10 @@ caso particular de moc: tienen que ser un dominio rectangular, pero oprque es as
 
 La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico, tal como puede verse en la figura~\ref{fig:cyclic-tracks} y se describe a continuación. Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tienen un espaciado tal que forman recorridos cerrados. En conclusión, para realizar un trazado de \emph{tracks} en un dominio de estas características, solo es necesario conocer las dimensiones de la \emph{bounding box} de la geometría y datos de entrada: densidad o espaciado de líneas y número de ángulos azimutales.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
-  \subfloat[\label{fig:cyclic-tracks-1}]{\includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-1.pdf}} 
-  \subfloat[\label{fig:cyclic-tracks-2}]{ \includegraphics[width=0.5\linewidth]{graficos/cyclic-tracks/cyclic-tracks-2.pdf}}\\
+  \subfloat[\label{fig:cyclic-tracks-1}]{\includegraphics[width=0.485\linewidth]{graficos/cyclic-tracks/cyclic-tracks-1.pdf}} 
+  \subfloat[\label{fig:cyclic-tracks-2}]{ \includegraphics[width=0.485\linewidth]{graficos/cyclic-tracks/cyclic-tracks-2.pdf}}\\
   \caption{\emph{Tracks} de dos \emph{ray tracing} cíclicos trazados sobre un dominio rectangular. La figura~\ref{fig:cyclic-tracks-1} permite visualizar el mecanismo del trazado de líneas, mientras que la figura~\ref{fig:cyclic-tracks-2} demuestra el resultado obtenido al aplicar el mismo procedimiento pero considerando una mayor discretización en ángulos azimutales y densidad de líneas.}
   \label{fig:cyclic-tracks}
  \end{center}
@@ -448,19 +448,19 @@ La principal ventaja de utilizar \emph{cyclic tracking} es el manejo de las cond
 
 Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos correspondientes a cada región que atraviesan y así obtener la información necesaria para computar las variaciones del flujo angular a partir de la ecuación~\eqref{eq:delta-psi}. En la figura~\ref{fig:mesh-and-segments-1} se presentan, por un lado un mallado conformado mediante \emph{delaunay} y, por el otro, los segmentos coloreados por región resultantes de un \emph{ray tracing}. En este caso, la espaciado entre líneas y número de ángulos $\varphi$ seleccionados no permiten distinguir los segmentos graficados. Por este motivo, en la figura~\ref{fig:mesh-and-segments-2} se presenta el \emph{ray tracing} sobre una malla con elementos recombinados a partir de la malla en~\ref{fig:mesh-1} y parámetros de \emph{tracking} que permiten visualizar los segmentos de forma individual.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
-  \subfloat[\label{fig:mesh-1}]{\includegraphics[width=0.489\linewidth]{graficos/meshes-and-segments/mesh-1.pdf}} 
-  \subfloat[\label{fig:segments-1}]{ \includegraphics[width=0.511\linewidth]{graficos/meshes-and-segments/segments-1.pdf}}\\
+  \subfloat[\label{fig:mesh-1}]{\includegraphics[width=0.479\linewidth]{graficos/meshes-and-segments/mesh-1.pdf}} 
+  \subfloat[\label{fig:segments-1}]{ \includegraphics[width=0.501\linewidth]{graficos/meshes-and-segments/segments-1.pdf}}\\
   \caption{(\ref{fig:mesh-1}) presenta la malla de un determinado problema y~(\ref{fig:segments-1}) la segmentación de los \emph{tracks} sobre la misma. No es posible visualizar los segmentos de forma independiente debido a la cantidad de ángulos $\varphi$ y separación de líneas seleccionada.}
   \label{fig:mesh-and-segments-1}
  \end{center}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
-  \subfloat[\label{fig:mesh-2}]{\includegraphics[width=0.489\linewidth]{graficos/meshes-and-segments/mesh-2.pdf}}
-  \subfloat[\label{fig:segments-2}]{ \includegraphics[width=0.511\linewidth]{graficos/meshes-and-segments/segments-2.pdf}}\\
+  \subfloat[\label{fig:mesh-2}]{\includegraphics[width=0.479\linewidth]{graficos/meshes-and-segments/mesh-2.pdf}}
+  \subfloat[\label{fig:segments-2}]{ \includegraphics[width=0.501\linewidth]{graficos/meshes-and-segments/segments-2.pdf}}\\
   \caption{Con el fin de demostrar la capacidad de realizar \emph{ray tracings} sobre diferentes elementos y, además, poner en evidencia los segmentos no visibles en la figura~\ref{fig:segments-1}, se presentan las figuras~\ref{fig:mesh-2} y~\ref{fig:segments-2}.}
   \label{fig:mesh-and-segments-2}
  \end{center}
@@ -471,13 +471,13 @@ Opcionalmente, milonga efectúa la comparación de las áreas reales de cada reg
 
 \section{MOC \emph{solver}}
 
-En esta sección se darán algunos detalles del algoritmo que resuelve la formulación de transporte a través del método de las características en milonga. En cada \emph{transport sweep} se calcula $\phi_{i,g}$
+En esta sección se darán algunos detalles del algoritmo que resuelve la formulación de transporte a través del método de las características en milonga. En cada \emph{transport sweep} se calcula $\phi_{i,g}$ a partir de la ecuaci\'on~\eqref{eq:flujo-escalar-3}. Como se mencion\'o previamente, la sumatoria sobre $k \in K(i,m)$ hace referencia a los segmentos que la atraviesan con dirección $\boldsymbol{\hat{\Omega}}_m$ la región $i$, por lo que una forma de obtener $\phi_{i,g}$ es recorrer cada \emph{track} contabilizando el aporte a $\phi_{i,g}$ de cada segmento. La figura~\ref{fig:tracks-solver} representa el orden en que milonga recorre cada segmento de cada \emph{track}. En este contexto, la ecuaci\'on~\eqref{eq:flujo-escalar-3} es resuelta para el primer segmento del \emph{track} señalado en el primer recuadro a partir de un \emph{guess} inicial de flujo angular entrante. El aporte de este segmento al flujo escalar es contabilizado y almacenado. Posteriormente, se contin\'ua con el recorrido del \emph{track} hacia delante hasta llegar a la frontera del dominio. Luego, el mismo \emph{track} es recorrido en sentido inverso\footnote{Es importante tener en cuenta que antes de recorrer el \emph{track} en sentido contrario también se realizan los recorridos para cada \'angulo polar $p$ y grupo de energía $g$.}. El proceso se repite para todas las l\'ineas de trazo con una misma dirección azimutal y, dependiendo de la condición de contorno, el flujo angular saliente de un \emph{track} es considerado como flujo angular entrante del que corresponda en un \emph{transport sweep} posterior. Una vez que se finaliza con los rayos de determinada dirección azimutal, se procede con los pertenecientes a otra y se repite la misma l\'ogica.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
   \includegraphics[width=1.0\linewidth]{graficos/solver/cyclic-tracks-1.pdf}
  \end{center}
-\caption{\label{fig:tracks-solver} .}
+\caption{\label{fig:tracks-solver} Recorrido de \emph{tracks} en un \emph{transport sweep} de milonga. Los rayos de color se corresponden con aquellos que ya han sido recorridos y las flechas indican el sentido en que se los recorre.}
 \end{figure}
 
 
@@ -566,7 +566,7 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 
 Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo, presentadas en la figura~\ref{fig:bwr-flujos}. 0.99937585
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
   \includegraphics[width=0.6\linewidth]{graficos/bwr-gadolinio/bwr-gadolinio.pdf}
  \end{center}
@@ -592,7 +592,7 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 \end{table}
 }
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
  \begin{center}
   \subfloat[\label{fig:bwr-flujo-rapido}]{\includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-rapido.pdf}}
   \subfloat[\label{fig:bwr-flujo-termico}]{ \includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-termico.pdf}}\\
@@ -610,7 +610,7 @@ mejorar la definicion de geometrias
 \label{lastpage}
 
 
-\pagebreak
+% \pagebreak
 \printbibliography
 
 \end{document}
