@@ -248,7 +248,7 @@ Debido a la gran cantidad de notación disponible en la bibliografía, es conven
  \begin{center}
   \includegraphics[width=1.0\linewidth]{coords-indices-2.pdf}
  \end{center}
-\caption{\label{fig:coords-indices} Discretización espacial de la formulación MOC.}
+\caption{\label{fig:coords-indices} Representación gráfica de la notación utilizada para la formulación MOC en este trabajo.}
 \end{figure}
 
 Por otra parte, las secciones eficaces responden a la nomenclatura usual:
@@ -423,17 +423,12 @@ Posteriormente, cada ángulo $\varphi_a$ se corrige de forma tal que el \emph{ra
 
 Milonga trabaja con diferentes cuadraturas polares descriptas, en su mayoría, en~\cite{handbook-ingnuclear} y~\cite{tabuchi}. Entre ellas, es posible hacer uso de cuadraturas tipo \emph{equal angle}, \emph{equal weight}, Gauss-Legendre, Leonard y Tabuchi-Yamamoto (seleccionada por defecto).
 
-\section{Geometr\'ias en milonga}
 
-Las geometrias en milonga se interpretan a traves de mallas, ya sean estructuradas o no estructuradas. 
+\section{\emph{Ray tracing} de mallas 2D} \label{sec:ray-tracing}
 
-caso particular de moc: tienen que ser un dominio rectangular, pero oprque es así lo explico mas adelante.
+La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontar el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. 
 
-\subsection{Mallas estructuradas y no estructuradas}
-
-\subsection{\emph{Ray tracing} de mallas 2D} \label{sec:ray-tracing}
-
-La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resolver es uno de los pasos más importantes que debe afrontarse en el método de las características. Luego de este procedimiento, se dispone de las estructuras de datos que almacenan información de los \emph{tracks}, principalmente los segmentos que los forman y la región a la que cada uno de ellos pertenece. Como se ha visto anteriormente, la actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico, tal como puede verse en la figura~\ref{fig:cyclic-tracks} y se describe a continuación. Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tienen un espaciado tal que forman recorridos cerrados. En conclusión, para realizar un trazado de \emph{tracks} en un dominio de estas características, solo es necesario conocer las dimensiones de la \emph{bounding box} de la geometría y datos de entrada: densidad o espaciado de líneas y número de ángulos azimutales.
+La actual formulación MOC implementada en milonga acepta únicamente dominios rectangulares. El motivo de esta limitación radica en que el tipo de algoritmo de \emph{ray tracing} desarrollado es de tipo c\'iclico, tal como puede verse en la figura~\ref{fig:cyclic-tracks} y se describe a continuación. Por simetr\'ia, solo es necesario trazar \emph{tracks} con $\varphi \in \left[ 0, \pi \right]$ debido a que aquellos con $\varphi + \pi$ poseen los mismos puntos de definición. Por otro lado, los \emph{tracks} con ángulos azimutales suplementarios tienen un espaciado tal que se forman recorridos cerrados. En conclusión, para realizar un trazado de \emph{tracks} en un dominio de estas características, solo es necesario conocer las dimensiones de la \emph{bounding box} de la geometría y datos de entrada: densidad o espaciado de líneas y número de ángulos azimutales.
 
 \begin{figure}[!ht]
  \begin{center}
@@ -446,7 +441,7 @@ La realizaci\'on del \emph{ray tracing} sobre la geometría del problema a resol
 
 La principal ventaja de utilizar \emph{cyclic tracking} es el manejo de las condiciones de contorno debido a que no es necesario realizar aproximaciones de ningún tipo. Si la condición de contorno es de vacío, el flujo angular entrante a determinado \emph{track} es simplemente nulo. Para los casos con condiciones de contorno reflectivas o periódicas, el flujo angular entrante a cada \emph{track} es igual al flujo angular saliente de algún otro (dependiendo la condición de contorno). En este sentido, milonga conecta adecuadamente los \emph{tracks}.
 
-Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos correspondientes a cada región que atraviesan y así obtener la información necesaria para computar las variaciones del flujo angular a partir de la ecuación~\eqref{eq:delta-psi}. En la figura~\ref{fig:mesh-and-segments-1} se presentan, por un lado un mallado conformado mediante \emph{delaunay} y, por el otro, los segmentos coloreados por región resultantes de un \emph{ray tracing}. En este caso, la espaciado entre líneas y número de ángulos $\varphi$ seleccionados no permiten distinguir los segmentos graficados. Por este motivo, en la figura~\ref{fig:mesh-and-segments-2} se presenta el \emph{ray tracing} sobre una malla con elementos recombinados a partir de la malla en~\ref{fig:mesh-1} y parámetros de \emph{tracking} que permiten visualizar los segmentos de forma individual.
+Una vez definidos los \emph{tracks}, es momento de discretizarlos en segmentos correspondientes a cada región que atraviesan y así obtener la información necesaria para computar las variaciones del flujo angular a partir de la ecuación~\eqref{eq:delta-psi}. En la figura~\ref{fig:mesh-and-segments-1} se presentan, por un lado un mallado conformado mediante \emph{delaunay} y, por el otro, los segmentos coloreados por región resultantes de un \emph{ray tracing}. En este caso, el espaciado entre líneas y número de ángulos $\varphi$ seleccionados no permiten distinguir los segmentos graficados. Por este motivo, en la figura~\ref{fig:mesh-and-segments-2} se presenta el \emph{ray tracing} sobre una malla con elementos recombinados a partir de la malla en~\ref{fig:mesh-1} y parámetros de \emph{tracking} que permiten visualizar los segmentos de forma individual.
 
 \begin{figure}[!ht]
  \begin{center}
@@ -471,7 +466,7 @@ Opcionalmente, milonga efectúa la comparación de las áreas reales de cada reg
 
 \section{MOC \emph{solver}}
 
-En esta sección se darán algunos detalles del algoritmo que resuelve la formulación de transporte a través del método de las características en milonga. En cada \emph{transport sweep} se calcula $\phi_{i,g}$ a partir de la ecuaci\'on~\eqref{eq:flujo-escalar-3}. Como se mencion\'o previamente, la sumatoria sobre $k \in K(i,m)$ hace referencia a los segmentos que la atraviesan con dirección $\boldsymbol{\hat{\Omega}}_m$ la región $i$, por lo que una forma de obtener $\phi_{i,g}$ es recorrer cada \emph{track} contabilizando el aporte a $\phi_{i,g}$ de cada segmento. La figura~\ref{fig:tracks-solver} representa el orden en que milonga recorre cada segmento de cada \emph{track}. En este contexto, la ecuaci\'on~\eqref{eq:flujo-escalar-3} es resuelta para el primer segmento del \emph{track} señalado en el primer recuadro a partir de un \emph{guess} inicial de flujo angular entrante. El aporte de este segmento al flujo escalar es contabilizado y almacenado. Posteriormente, se contin\'ua con el recorrido del \emph{track} hacia delante hasta llegar a la frontera del dominio. Luego, el mismo \emph{track} es recorrido en sentido inverso\footnote{Es importante tener en cuenta que antes de recorrer el \emph{track} en sentido contrario también se realizan los recorridos para cada \'angulo polar $p$ y grupo de energía $g$.}. El proceso se repite para todas las l\'ineas de trazo con una misma dirección azimutal y, dependiendo de la condición de contorno, el flujo angular saliente de un \emph{track} es considerado como flujo angular entrante del que corresponda en un \emph{transport sweep} posterior. Una vez que se finaliza con los rayos de determinada dirección azimutal, se procede con los pertenecientes a otra y se repite la misma l\'ogica.
+En esta sección se darán algunos detalles del algoritmo que resuelve la formulación de transporte a través del método de las características en milonga. En cada \emph{transport sweep} se calcula $\phi_{i,g}$ a partir de la ecuaci\'on~\eqref{eq:flujo-escalar-3}. Como se mencion\'o previamente, la sumatoria sobre $k \in K(i,m)$ hace referencia a los segmentos que atraviesan con dirección $\boldsymbol{\hat{\Omega}}_m$ la región $i$, por lo que una forma de obtener $\phi_{i,g}$ es recorrer cada \emph{track} contabilizando el aporte a $\phi_{i,g}$ de cada segmento. La figura~\ref{fig:tracks-solver} representa el orden en que milonga recorre cada segmento de cada \emph{track}. En este contexto, la ecuaci\'on~\eqref{eq:flujo-escalar-3} es resuelta para el primer segmento del \emph{track} señalado en el primer recuadro a partir de un \emph{guess} inicial de flujo angular entrante. El aporte de este segmento al flujo escalar es contabilizado y almacenado. Posteriormente, se contin\'ua con el recorrido del \emph{track} hacia delante hasta llegar a la frontera del dominio. Luego, el mismo \emph{track} es recorrido en sentido inverso\footnote{Es importante tener en cuenta que antes de recorrer el \emph{track} en sentido contrario también se realizan los recorridos para cada \'angulo polar $p$ y grupo de energía $g$.}. El proceso se repite para todas las l\'ineas de trazo con una misma dirección azimutal y, dependiendo de la condición de contorno, el flujo angular saliente de un \emph{track} es considerado como flujo angular entrante del que corresponda en un \emph{transport sweep} posterior. Una vez que se finaliza con los rayos de determinada dirección azimutal, se procede con los pertenecientes a otra y se repite la misma l\'ogica. Al finalizar un \emph{transport sweep}, se recalcula el factor de multiplicación y se verifican los criterios de convergencia. Si éstos no son cumplidos, un nuevo cálculo de transporte con fuentes y condiciones de contorno actualizadas es realizado.
 
 \begin{figure}[!ht]
  \begin{center}
@@ -483,7 +478,7 @@ En esta sección se darán algunos detalles del algoritmo que resuelve la formul
 
 \section{Sintaxis}
 
-La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. Mucho de esto puede ser consultado en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}, m\'as all\'a de que la documentaci\'on disponible pueda diferir de la actual implementación en milonga. Por otro lado, las consultas a los desarrolladores del c\'odigo son m\'as que bienvenidas. 
+La intenci\'on de esta secci\'on no es explicar en detalle la sintaxis detr\'as de milonga ya que esto implicar\'ia, necesariamente, escribir acerca de la sintaxis de wasora. M\'as all\'a de que la documentaci\'on disponible pueda diferir de la actual implementación en wasora y milonga, información acerca de este tema puede ser consultada en las referencias~\cite{wasora, milongabase2010, milonga-db, enief-milonga-2014}. Por otro lado, las consultas a los desarrolladores de la \emph{suite} de wasora son m\'as que bienvenidas. 
 
 La definici\'on de un problema a resolver con el m\'etodo de las características requiere de algunas nuevas consideraciones. En primer lugar, la formulación MOC necesita ser provista de una estructura de \emph{ray tracing}. Milonga permite, en un mismo \emph{input}, generar diferentes estructuras de este tipo sobre una misma o diferentes mallas mediante las siguientes sentencias
 
@@ -499,10 +494,11 @@ Cada estructura de \emph{ray tracing} tiene definida por defecto una cuadratura 
 
 \begin{lstlisting}[style=wasora]
 POLAR_QUADRATURE NAME polar_1 N_POLAR_ANGLES 6 TYPE tabuchi_yamamoto
+POLAR_QUADRATURE NAME polar_2 N_POLAR_ANGLES 4 TYPE leonard
 \end{lstlisting}
 
 \noindent
-Otras cuadraturas polares disponibles son \texttt{equal_weight}, \texttt{equal_angle}, \texttt{gauss_legendre} y \texttt{leonard}. Por otra parte, el usuario puede proveer las cuadraturas a partir de la \emph{keyword} \texttt{DATA} en reemplazo de \texttt{TYPE}.
+Otras cuadraturas polares disponibles son \texttt{equal_weight}, \texttt{equal_angle} y \texttt{gauss_legendre}. Por otra parte, el usuario puede proveer las cuadraturas a partir de la \emph{keyword} \texttt{DATA} en reemplazo de \texttt{TYPE}.
 
 Por \'ultimo, al definir el problema a resolver con la formulación MOC, debe proveerse de la estructura de \emph{ray tracing} y, en el caso de ser necesario, la cuadratura polar:
 
@@ -517,10 +513,10 @@ Si bien la incorporaci\'on del m\'etodo de las características en milonga se en
 
 \subsection{\emph{Benchmarks} de medio homog\'eneo infinito}
 
-Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que la formulación MOC de milonga, al resolver sobre las l\'ineas de trazo, satisface la relaci\'on de conservaci\'on planteada en la ecuación de transporte~\eqref{eq:transportemultigrupo}. En este caso, es indiferente que geometr\'ia se seleccione para resolver los problemas. Las secciones eficaces de ambos \emph{benchmarks} se detallan en las tablas~\ref{tabla:xs-pua} y~\ref{tabla:xs-urr}, mientras que los resultados obtenidos se listan en la tabla~\ref{tabla:k-infty}. Puede verse la perfecta concordancia con los valores de referencia.
+Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que la formulación MOC de milonga, al resolver sobre las l\'ineas de trazo, satisface la relaci\'on de conservaci\'on planteada en la ecuación de transporte~\eqref{eq:transportemultigrupo}. En este caso, es indiferente qué geometr\'ia se seleccione para resolver los problemas, aunque deben especificarse condiciones de reflexión o periódicas en todas las fronteras. Las secciones eficaces de ambos \emph{benchmarks} se detallan en las tablas~\ref{tabla:xs-pua} y~\ref{tabla:xs-urr}, mientras que los resultados obtenidos se listan en la tabla~\ref{tabla:k-infty}. Puede verse la perfecta concordancia con los valores de referencia.
 
 {
-\begin{table}[h!]
+\begin{table}[ht!]
 \begin{center}
 \begin{tabular}{cccccccc}
 \small \emph{Benchmark}  & \small $g$ & \small $\chi_g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{a}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{1 \rightarrow 1}$ \\
@@ -532,7 +528,7 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 }
 
 {
-\begin{table}[h!]
+\begin{table}[ht!]
 \begin{center}
 \begin{tabular}{lcccccccccccc}
 \small \emph{Benchmark}  & \small $g$ & \small $\chi_g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{a}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ & \small $\Sigma^s_{g \rightarrow 3}$ & \small $\Sigma^s_{g \rightarrow 4}$ & \small $\Sigma^s_{g \rightarrow 5}$ & \small $\Sigma^s_{g \rightarrow 6}$ \\
@@ -549,14 +545,14 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 }
 
 {
-\begin{table}[h!]
+\begin{table}[ht!]
 \begin{center}
 \begin{tabular}{lccc}
-\small \emph{Benchmark}  & \small $k_{\infty}^{\text{referencia}}$  & \small $k_{\infty}^{\text{milonga}}$  & \small $\Delta  k_{\infty}$ \\
+\small \emph{Benchmark}  & \small $k_{\infty}^{\text{referencia}}$  & \small $k_{\infty}^{\text{milonga}}$  & \small $ \left| \delta  k_{\text{eff}} \right| \left[ \si{\percent} \right] $ \\
 \small Pua-1-0-IN        & \tiny \num{2.612903}                     & \tiny \num{2.612903}                  & \tiny \num{0.0}     \\
 \small URR-6-0-IN        & \tiny \num{1.600000}                     & \tiny \num{1.600000}                  & \tiny \num{0.0} 
 \end{tabular}
-\caption{\label{tabla:k-infty} Factores de multiplicación obtenidos con milonga y contrastados con los valores de referencia.}
+\caption{\label{tabla:k-infty} Factores de multiplicación obtenidos con milonga y contrastados con los valores de referencia para los \emph{benchmarks} de medio infinito homogéneo.}
 \end{center}
 \end{table}
 }
@@ -564,17 +560,17 @@ Los \emph{benchmarks} presentados en esta sección tienen como fin demostrar que
 
 \subsection{\emph{Benchmark} BWR}
 
-Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo, presentadas en la figura~\ref{fig:bwr-flujos}. 0.99937585
-
+Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen Gadolinio como veneno quemable, se presenta en la malla de la figura~\ref{fig:bwr-mesh}. La geometr\'ia posee un \emph{pitch} de \SI{1.6}{\centi\metre}, los \emph{pins} un radio de \SI{0.5}{\centi\metre} y, por \'ultimo, el espesor del \emph{cladding} es de \SI{0.1}{\centi\metre}. Las secciones eficaces se presentan en la tabla~\ref{tabla:xs-bwr}. Luego de realizar el trazo de l\'ineas sobre la geometr\'ia y aplicar MOC junto a condiciones de contorno reflectivas, milonga f\'acilmente reporta las salidas gr\'aficas de las distribuciones espaciales y energ\'eticas del flujo neutrónico presentadas en la figura~\ref{fig:bwr-flujos}.
+ 
 \begin{figure}[!ht]
  \begin{center}
-  \includegraphics[width=0.6\linewidth]{graficos/bwr-gadolinio/bwr-gadolinio.pdf}
+  \includegraphics[width=0.55\linewidth]{graficos/bwr-gadolinio/bwr-gadolinio.pdf}
  \end{center}
 \caption{\label{fig:bwr-mesh} Malla de celda BWR $\num{4} \times \num{4}$ obtenida a partir de gmsh~\cite{gmsh}. Los dos \emph{pins} que difieren de color son aquellos que poseen Gadolinio como veneno quemable. Aproximadamente, \num{6400} celdas forman la malla.}
 \end{figure}
 
 {
-\begin{table}[h!]
+\begin{table}[ht!]
 \begin{center}
 \begin{tabular}{lcccccc}
 \small Material  & \small $g$ & \small $\Sigma^{f}_g$ & \small $\nu\Sigma^{f}_g$ & \small $\Sigma^{t}_g$ & \small $\Sigma^s_{g \rightarrow 1}$ & \small $\Sigma^s_{g \rightarrow 2}$ \\
@@ -592,6 +588,18 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 \end{table}
 }
 
+{
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{lccc}
+\small \emph{Benchmark}  & \small $k_{\text{eff}}^{\text{referencia}}$  & \small $k_{\text{eff}}^{\text{milonga}}$  & \small $ \left| \delta  k_{\text{eff}} \right| \left[ \si{\percent} \right] $ \\
+\small BWR               & \tiny \num{0.9896832}                        & \tiny \num{0.9993759}                     & \tiny \num{1.0}
+\end{tabular}
+\caption{\label{tabla:k-eff-bwr} Factor de multiplicación obtenido con milonga y contrastado con el valor de referencia para el \emph{benchmark} de BWR.}
+\end{center}
+\end{table}
+}
+
 \begin{figure}[!ht]
  \begin{center}
   \subfloat[\label{fig:bwr-flujo-rapido}]{\includegraphics[width=0.485\linewidth]{graficos/flujos/gadolinio-rapido.pdf}}
@@ -602,16 +610,17 @@ Una celda BWR de $\num{4} \times \num{4}$ \emph{pins}, de los cuales dos poseen 
 \end{figure}
 
 
-
 \section{Conclusiones}
 
+vamos bien encaminados, recien arrancamos
 mejorar la definicion de geometrias
 
-\label{lastpage}
 
 
-% \pagebreak
+
+\pagebreak
 \printbibliography
+\label{lastpage}
 
 \end{document}
 
